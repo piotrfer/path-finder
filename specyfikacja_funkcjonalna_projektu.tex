@@ -1,0 +1,74 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+
+\title{Specyfikacja funkcjonalna projektu bieszczadzki komiwojażer  - wersja alfa}
+\author{Piotr Ferdynus}
+\date{04.11.2019}
+\begin{document}
+\maketitle
+
+\part{Alpha version}
+\section{Wprowadzenie}
+\subsection{Cel dokumentu}
+Określenie pełnej funkcjonalności projektu bieszczadzki komiwojażer , jak również sprecyzowanie sposobu interakcji z programem, uzyskiwanego wyniku, obsługi błędów oraz przebiegu testowania gotowego oprogramowania.
+\subsection{Cel projektu}
+Umożliwienie łatwego i szybkiego wyszukiwania optymalnej trasy pomiędzy wybranymi przez użytkowanika punktami, kierując się długością trwania trasy jak również wysokością koniecznych do poniesienia kosztów, poprzez opracowanie i implementację odpowiedniego algorytmu.
+\subsection{Użytkownik końcowy}
+Projekt w założeniu jest przeznaczony dla sprecyzowanej grupy odbiorców -- studentów Joachima, Alojzego, Cypriana i Eustachego, jednak ze względu na jego dużą uniwersalność może być zastosowany przez każdą osobę lub grupę zorganizowaną pragnącą znaleźć najbardziej optymalny wariant trasy w Bieszczadach.
+\section{Uruchomienie programu}
+Uruchomienie programy dokonuje się z poziomu wiersza poleceń, jako argumenty podając ścieżkę do pliku konfiguracyjnego, miejsce startu oraz, ewentualnie, plik zawierający miejsca podróży, których odwiedzenie jest warunkiem koniecznym.
+
+tutaj dwa przykłayd wywołania
+
+\section{Dane wejściowe}
+Dane wejściowe wprowadzane do programu:
+\subsection{Plik konfiguracyjny}
+Plik zawierający dane o wszystkich możliwych punktach podróży oraz o czasach przejścia pomiędzy tymi punktami. Struktura pliku kofiguracyjnego:
+
+\begin{verbatim}
+### Miejsca podróży
+Lp. | ID_miejsca | Nazwa miejsca początkowego | Opis miejsca |
+1. | A | Koliba Studencka Politechniki Warszawskiej | Baza wypadowa (miejsce rozpoczęcia wędrówki) |
+2. | B | Jawornik | Szczyt (1021) |
+3. | C | Rabia Skała | Szczyt (1199) |
+4. | D | Dziurkowiec | Szczyt (1189) |
+5. | E | Okrąglik | Szczyt (1101) |
+6. | F | Fereczata | Szczyt (1102) |
+
+### Czas przejścia
+Lp. | ID_miejsca_początkowego (S) | ID_miejsca_końcowego (E) | Czas S -> E | Czas E -> S | Jednorazowa opłata za przejście trasą (zł) |
+1. | A | B | 2:00 | 3:00 | -- |
+2. | A | C | 3:00 | 3:30 | 5 |
+3. | B | C | 1:30 | 1:30 | -- |
+4. | B | D | 1:00 | 1:30 | -- |
+5. | B | E | 1:00 | 1:30 | -- |
+6. | C | D | 3:00 | 2:00 | -- |
+7. | D | F | 4:00 | 3:00 | -- |
+8. | E | F | 0:30 | 0:30 | -- |
+\end{verbatim}
+\subsection{Miejsce startu}
+Argument zawierający wartość ID\_miejsca, z którego ma rozpocząć i w którym ma zakończyć się planowana wędrówka.
+\subsection{Wybrane miejsca podróży}
+Plik zawierający zbiór wartości ID\_miejsca wszystkich miejsc, które są koniecznymi punktami wybranej wędrówki. Ten argument wywołania jest opcjonalny, w przypadku jego braku program określi optymalną trasę przejścia przez wszystkie miejsca znajdujące się w pliku konfiguracyjnym.
+\section{Dane wyjściowe}
+Dane wyjściowe zostaną zapisane w postaci czterech wersów danych: pierwszy wers zawiera trasę obliczoną jako rezultat działania programu w postaci ciągu wartości ID\_miejsca rozdzielonych symbolem strzałki " -> ". W drugim wersie znajduje się rozszerzenie informacji zawartych powyżej poprzez zastąpienie wartości ID\_miejsca nazwą miejsca. Następnie zostaje podany przewidywany czas wędrówki w godzinach i minutach, oraz sumaryczny koszt wstępu na szlak. Całość zostaje zapisana w pliku wynikowym w formacie \textit{.txt} o nazwie "nazwa pliku" w folderze z poziomu którego wywołany został program. 
+(dodaj możliwy wygląd pliku wynikowego)
+\section{Scenariusz uruchomienia}
+Program po uruchomieniu wyświetli komunikat o rozpoczęciu pracy. Następnie rozpocznie interpretację argumentów wejściowych, wyświetlając na bieżąco komunikat o ewentualnych błędach wraz z ich dokładnym opisem, oraz informacją, czy błąd okazał się krytyczny i uniemożliwił kontynuowanie pracy. Po wczytaniu odpowiednich plików i argumentów wejściowych program wyświetli komunikat o poprawnym bądź niepoprawnym zakończeniu odczytu danych wejściowych. Następnie wykona zlecone mu zadanie, a fakt pomyślnego zakończenia działania zaanonsuje odpowiednim komunikatem.
+\section{Opis sytuacji wyjątkowych}
+\begin{tabular}{|c|c|c|} \hline
+& & \\
+opis sytuacji wyjątkowej & sposób obsługi sytuacji & czy kończy pracę programu \\ 
+& & \\ \hline
+błąd pliku wejściowego & wyświetlenie komunikatu & tak\\ \hline
+\end{tabular}
+\section{Testowanie}
+Testowaniu będą podlegać następujące przypadki:
+\begin{enumerate}
+    \item Wywołanie programu bez argumentów wejściowych
+    \item Podanie nieprawidłowej nazwy pliku
+\end{enumerate}
+
+
+\end{document}
