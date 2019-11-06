@@ -5,18 +5,31 @@
 \usepackage{fancyhdr}
 \usepackage{indentfirst}
 \usepackage{lastpage}
+\usepackage{setspace}
+\usepackage{longtable}
 
 \setlength{\parskip}{1ex plus 0.5ex minus 0.2ex}
 
 \pagestyle{fancy}
 \title{Specyfikacja funkcjonalna projektu indywidualnego \textit{Bieszczadzki Komiwojażer}}
-\author{Piotr Ferdynus}
-\date{06.11.2019}
-
 
 \begin{document}
 \begin{titlepage}
-\maketitle
+\makeatletter
+\noindent
+\vspace{25pt}
+\begin{center}
+\LARGE \textsc{\@title}
+\end{center}
+\makeatother
+\vspace{300pt}
+\begin{flushright}
+\noindent Wykonał: Piotr Ferdynus\\
+Sprawdził: mgr inż. Paweł Zawadzki\\
+Data: 06.11.2019\\
+\end{flushright}
+
+
 \thispagestyle{empty}
 \end{titlepage}
 
@@ -31,14 +44,14 @@ Wstęp do tematyki projektu i opis rozwiązywanego problemu.
 Określenie pełnej funkcjonalności projektu \textit{Bieszczadzki Komiwojażer}, jak również sprecyzowanie sposobu interakcji z programem, formy uzyskiwanego rezultatu, sposobu obsługi sytuacji wyjątkowych oraz przebiegu testowania gotowego oprogramowania.
 
 \subsection{Cel projektu}
-Umożliwienie bezproblemowego i szybkiego znalezienia optymalnego wariantu trasy pomiędzy wybranymi przez użytkowanika punktami, kierując się czasem potrzebnym na pokonanie trasy oraz, w drugiej kolejności, wysokością koniecznych do poniesienia kosztów.
+Umożliwienie bezproblemowego i szybkiego znalezienia optymalnego wariantu trasy pomiędzy wybranymi przez użytkownika punktami, kierując się czasem potrzebnym na pokonanie trasy oraz, w drugiej kolejności, wysokością koniecznych do poniesienia kosztów.
 
 \subsection{Użytkownik końcowy}
 Program przeznaczony jest dla osób o ograniczonym czasie i mocno ograniczonych nakładach finansowych, które chciałyby doświadczyć wędrówki po malowniczej krainie Bieszczad, odwiedzając wszystkie wybrane przez siebie miejsca w jak najkrótszym czasie.
 
-
+\vspace{15pt}
 \section{Uruchomienie programu}
-Uruchomienie programu dokonuje się z poziomu wiersza poleceń. Do prawidłowego działania wymagany jest plik konfiguracyjny oraz indeks miejsca startu, opcjonalną daną jest zbiór wybranych przez użytkownika miejsc, przez które musi przebiegać trasa. Pliki zostają przekazane poprzez podanie ścieżki do pliku jako argument wywołania.Szczegółowe informacje na temat danych wejściowych znajdują się w sekcji \textit{Dane wejściowe}. 
+Uruchomienie programu dokonuje się z poziomu wiersza poleceń. Do prawidłowego działania wymagany jest plik konfiguracyjny oraz indeks miejsca startu, opcjonalną daną jest zbiór wybranych przez użytkownika miejsc, przez które musi przebiegać trasa. Pliki zostają przekazane poprzez podanie ścieżki do pliku jako argument wywołania. Szczegółowe informacje na temat danych wejściowych znajdują się w sekcji \textit{Dane wejściowe}. 
 
 \vspace{10pt}
 Przykładowy sposób wywołania programu:
@@ -48,15 +61,15 @@ Przykładowy sposób wywołania programu:
     .\pathfinder data\plik_konfiguracyjny B \data\wybrane_miejsca
 \end{verbatim}
 
-
+\vspace{15pt}
 \section{Dane wejściowe}
-Szczegółowy opis danych wejściowych dostarczanych do programu:
+Szczegółowy opis danych wejściowych dostarczanych do programu.
 
 \subsection{Pliki}
-Pliki są przekazywane poprzez podanie ścieżki do pliku jako argumentu wywołania. Kolejne kolumny są rozdzielone znakiem '|', a kolejne wiersze znakiem nowej linii. Poszczególne części mogą zawierać nagłówki, ale nie jest to wymagane. Liczby porządkowe poszczególnych części pliku muszą być posortowane w rosnąco i nie mogą się powtarzać. Linijka rozpoczynająca się od symbolu '\#' jest ignorowana przez program.
+Pliki są przekazywane poprzez podanie ścieżki do pliku jako argumentu wywołania. Kolejne kolumny są rozdzielone znakiem '|', a kolejne wiersze znakiem nowej linii. Poszczególne części mogą zawierać nagłówki, ale nie jest to wymagane. Liczby porządkowe poszczególnych części pliku muszą być posortowane rosnąco i nie mogą się powtarzać. Linijka rozpoczynająca się symbolem '\#' jest ignorowana przez program.
 
 \subsubsection{Plik konfiguracyjny}
-Plik zawierający dane niezbędne do prawidłowego działania programu: dane o wszystkich możliwych punktach podróży oraz o czasie przejścia pomiędzy wybranymi punktami. Struktura pliku konfiguracyjnego -- pierwsz część zawiera informacje o miejscach podróży w następującej postaci:
+Plik zawierający dane niezbędne do prawidłowego działania programu: dane o wszystkich możliwych punktach podróży oraz o czasie przejścia pomiędzy bezpośrednio połączonymi punktami. Struktura pliku konfiguracyjnego składa się z dwóch części -- pierwsza część zawiera informacje o miejscach podróży w~następującej postaci:
 
 \vspace{5pt}
 \begin{verbatim}
@@ -64,118 +77,124 @@ Plik zawierający dane niezbędne do prawidłowego działania programu: dane o w
 \end{verbatim}
 \vspace{5pt}
 
-\noindent gdzie kolumny oznaczają odpowiednio -- liczbę porządkową, \textbf{unikalny} indeks miejsca, słowną nazwę miejsca) i słowny opis miejsca. \\
-
-Druga część pliku zawiera informacje o czasie przejścia pomiędzy wybranymi punktami w następującej strukturze:
+Kolejne kolumny oznaczają odpowiednio -- liczbę porządkową, \textbf{unikalny} indeks miejsca, nazwę miejsca i opis słowny miejsca. Druga część pliku zawiera informacje o czasie przejścia pomiędzy połączonymi punktami w następującej strukturze:
 
 \vspace{5pt}
 \begin{verbatim}
     Lp. | ID_S | ID_E | S -> E | E -> S | opłata 
 \end{verbatim}
-\noindent gdzie kolumny oznaczają odpowiednio -- liczbę porządkową, indeks miejsca początkowego zawarty w pierwszej części pliku, indeks miejsca końcowego, zawarty w pierwszej części pliku, czas potrzebny na pokonanie trasy z miejsca początkowego do miejsca końcowego, czas potrzebny na pokonanie trasy z miejsca końcowego do miejsca początkowego i jednorazową opłatę za wstęp wyrażoną w złotówkach.
-\vspace{5pt}
+\noindent Kolumny oznaczają odpowiednio -- liczbę porządkową, indeks miejsca początkowego zawarty w pierwszej części pliku, indeks miejsca końcowego zawarty w pierwszej części pliku, czas potrzebny na pokonanie trasy z miejsca początkowego do miejsca końcowego, czas potrzebny na pokonanie trasy z miejsca końcowego do miejsca początkowego i jednorazową opłatę za wstęp wyrażoną w~złotówkach.
 
+\vspace{10pt}
 Przykład pliku konfiguracyjnego:
+\vspace{-8pt}
 \begin{verbatim}
-### Miejsca podróży
-Lp. | ID_miejsca | Nazwa miejsca początkowego | Opis miejsca |
-1. | A | Koliba Studencka Politechniki Warszawskiej | Baza wypadowa |
-2. | B | Jawornik | Szczyt (1021) |
-3. | C | Rabia Skała | Szczyt (1199) |
-4. | D | Dziurkowiec | Szczyt (1189) |
-
-### Czas przejścia
-1. | A | B | 2:00 | 3:00 | -- |
-2. | A | C | 3:00 | 3:30 | 5 |
-3. | B | C | 1:30 | 1:30 | -- |
-4. | B | D | 1:00 | 1:30 | -- |
-5. | B | E | 1:00 | 1:30 | -- |
-6. | C | D | 3:00 | 2:00 | -- |
+    ### Miejsca podróży
+    1. | B | Jawornik | Szczyt (1021) |
+    2. | C | Rabia Skała | Szczyt (1199) |
+    3. | D | Dziurkowiec | Szczyt (1189) |
+    ### Czas przejścia
+    1. | A | B | 2:00 | 3:00 | -- |
+    2. | A | C | 3:00 | 3:30 | 5 |
+    3. | B | C | 1:30 | 1:30 | -- |
+    4. | B | D | 1:00 | 1:30 | -- |
+    5. | B | E | 1:00 | 1:30 | -- |
+    6. | C | D | 3:00 | 2:00 | -- |
 \end{verbatim}
 
 \subsubsection{Wybrane miejsca podróży}
-Plik zawierający wartości ID\_miejsca wszystkich miejsc, które są koniecznymi punktami wybranej wędrówki. Ten argument wywołania jest opcjonalny, w przypadku jego braku program określi optymalną trasę przejścia przez wszystkie miejsca znajdujące się w pliku konfiguracyjnym. Struktura pliku przedstawia się następująco: 
-\newline \newline
+Plik zawierający wartości ID\_miejsca wszystkich miejsc, które są koniecznymi punktami planowanej wędrówki. Ten argument wywołania jest opcjonalny, w~przypadku jego braku program określi optymalną trasę przejścia przez wszystkie miejsca znajdujące się w pliku konfiguracyjnym. Struktura pliku przedstawia się następująco: 
 \begin{verbatim}
     Lp. | ID_miejsca
 \end{verbatim}
-\noindent, gdzie kolumny reprezentują kolejno: liczbę porządkową i ID\_miejsca, określone w podanym wcześniej pliku konfiguracyjnym. 
-\vspace{5pt}
+\noindent Kolumny reprezentują kolejno: liczbę porządkową i ID\_miejsca, określone w~podanym wcześniej pliku konfiguracyjnym. 
 
+\vspace{10pt}
 Przykładowy plik wybranych miejsc:
+\vspace{-8pt}
 \begin{verbatim}
-### Wybrane miejsca podróży
-Lp. | ID_miejsca |
-1. | A |
-2. | B |
-3. | E |
+    ### Wybrane miejsca podróży
+    Lp. | ID_miejsca |
+    1. | A |
+    2. | B |
+    3. | E |
 \end{verbatim}
 
 
 \subsection{Miejsce startu}
-Argument zawierający wartość ID\_miejsca, z którego ma rozpocząć, i w którym ma zakończyć się planowana wędrówka.
+Argument stanowiący wartość ID\_miejsca, w którym znajduje się planowane miejsce startu i zakończenia wędrówki.
 
 
 
-
+\newpage
 \section{Dane wyjściowe}
-Optymalna trasa marszu, uzyskana jako rezultat pracy programu zostaje zapisana do pliku w formacie \textit{.txt} o nazwie "optymalna\_trasa" w folderze z poziomu którego wywołany został program. Dane wyjściowe zostają zapisane w postaci czterech wersów danych: pierwszy wers zawiera trasę w postaci ciągu wartości ID\_miejsca rozdzielonych symbolem strzałki " -> ". W drugim wersie znajduje się rozszerzenie informacji zawartych powyżej poprzez zastąpienie wartości ID\_miejsca nazwą miejsca. Następnie zostaje podany przewidywany czas wędrówki w godzinach i minutach, oraz sumaryczny koszt wstępu na szlak.
-\newline
+Optymalna trasa marszu, uzyskana jako rezultat pracy programu zostaje zapisana do pliku w formacie \textit{.txt} o nazwie \textit{"optymalna\_trasa"} w folderze, z~poziomu którego wywołany został program. Dane wyjściowe zostają sformatowane w następujący sposób: pierwszy wers zawiera trasę w~postaci ciągu wartości ID\_miejsca rozdzielonych symbolem strzałki " -> ". W kolejnych wersach znajduje się rozszerzenie tej informacji poprzez zastąpienie wartości ID\_miejsca jego nazwą. Następnie zostaje podany przewidywany czas wędrówki wyrażony w godzinach i minutach oraz sumaryczny koszt wstępu na szlak.
+
+\vspace{10pt}
 Przykładowy plik wynikowy programu:
+\vspace{-8pt}
 \begin{verbatim}
-F -> G -> H -> A -> B -> D -> F
-Ustrzyki Górne 
--> Połonina Caryńska 
--> Bacówka Pod Małą Rawką 
--> Mała Rawka 
--> Wielka Rawka 
--> Ustrzyki Górne
-Czas: 6 godzin 21 minut
-Koszt: 5 zł
+    F -> G -> H -> A -> B -> D -> F
+    Ustrzyki Górne 
+    -> Połonina Caryńska 
+    -> Bacówka Pod Małą Rawką 
+    -> Mała Rawka 
+    -> Wielka Rawka 
+    -> Ustrzyki Górne
+    Czas: 6 godzin 21 minut
+    Koszt: 5 zł
 \end{verbatim}
 
-
+\vspace{15pt}
 \section{Scenariusz uruchomienia}
-Program po uruchomieniu wyświetli  o rozpoczęciu pracy. Jeżeli nie zostały żadne argumenty przy wywołaniu programu, zostanie przeprowadzony dialog w celu uzupełnienia informacji. Następnie rozpocznie interpretację argumentów wejściowych, wyświetlając na bieżąco  o ewentualnych błędach wraz z ich dokładnym opisem, oraz informacją, czy błąd okazał się krytyczny i uniemożliwił kontynuowanie pracy. Po wczytaniu odpowiednich plików i argumentów wejściowych program wyświetli  o poprawnym bądź niepoprawnym zakończeniu odczytu danych wejściowych. Następnie wykona zlecone mu zadanie, a fakt pomyślnego zakończenia działania zaanonsuje odpowiednim em.
+Program po uruchomieniu wyświetla komunikat o rozpoczęciu pracy. Następnie rozpocznie interpretację argumentów wejściowych, wyświetlając na bieżąco komunikat o ewentualnych błędach wraz z ich dokładnym opisem oraz informacją, czy błąd okazał się krytyczny i uniemożliwił kontynuowanie pracy. Po wczytaniu odpowiednich plików i argumentów wejściowych program wyświetli komunikat o poprawnym bądź niepoprawnym zakończeniu odczytu danych wejściowych. Następnie program przystąpi do wyznaczania optymalnej trasy, a fakt pomyślnego zakończenia działania zasygnalizuje odpowiednim komunikatem.
 
-
+\newpage
 \section{Opis sytuacji wyjątkowych}
-Opis niestandardowych sytuacji, które mogą wydarzyć się podczas użytkowania programu wraz z sposobem informowania o błędzie.
+Opis obsługi błędów i komunikacji z użytkownikiem po wystąpieniu niestandardowych sytuacji, które mogą wydarzyć się podczas pracy programu.
+\vspace{10pt}
 
 \begin{sloppypar}
-\begin{tabular}{|p{0.4\linewidth}|p{0.6\linewidth}|} \hline
-opis sytuacji   &   sposób obsługi \\ \hline
+\begin{spacing}{1.2}
+\begin{longtable}{| p{0.35\linewidth} | p{0.65\linewidth}|} \hline
+\textbf{opis sytuacji}   &   \textbf{sposób obsługi} \\ \hline \hline
 brak podanych argumentów & Przerwanie działania programu. Wyświetlenie pomocy dotyczącej uruchomienia programu. \\ \hline
-brak pliku wejściowego pod wskazanym adresem &   Przerwanie działania programu. Wyświetlenie komunikatu: "brak pliku wejściowego [podana ścieżka do pliku]". \\ \hline
-brak miejsca startu & "brak podanego miejsca startu"\\ \hline
+brak pliku wejściowego pod wskazanym adresem &   Przerwanie działania programu. Wyświetlenie komunikatu: "[podana ścieżka do pliku] -- plik nie istnieje". \\ \hline
+brak indeksu miejsca rozpoczęcia & Przerwanie działania programu. Wyświetlenie komunikatu: "brak podanego miejsca startu".\\ \hline
 pusty plik  & Przerwanie działania programu. Wyświetlenie komunikatu: "podany plik [podana ścieżka do pliku] jest pusty".  \\ \hline
 powtórzony indeks miejsca & Pominięcie powtórzonego indeksu. Wyświetlenie komunikatu: "wers: [numer wersu] | indeks [indeks] występuje już w tym pliku w wersie [numer powtórzonego wersu]; pomijam". \\ \hline
-podane wybrane miejsca nie są ze sobą połączone &  Przerwanie działania programu. Wyświetlenie komunikatu: "brak trasy; punkty [id\_punktu] i [id\_punktu] nie są ze sobą połączone".\\ \hline
+podane miejsca nie są ze sobą połączone &  Przerwanie działania programu. Wyświetlenie komunikatu: "brak trasy; punkty [id\_punktu] i~[id\_punktu] nie są ze sobą połączone".\\ \hline
 podany czas trasy jest ujemny & Przerwanie działania programu. Wyświetlenie komunikatu: "wers: [numer wersu] | czas trasy nie może być ujemny.\\ \hline
 podany koszt wstepu na trasę jest ujemny & Przyjęcie kosztu trasy 0 zł. Wyświetlenie komunikatu: "wers: [numer wersu] | opłata wstępu nie może być ujemna; przyjmuję wstęp darmowy".\\ \hline
 miejsce startu nie znajduje się w pliku konfiguracyjnym &  Przerwanie działania programu. Wyświetlenie komunikatu "brak miejsca o ID\_miejsca [id\_miejsca]". \\ \hline
-nieprawidłowe id\_miejsca w schemacie tras &  Przerwanie działania programu. Wyświetlenie komunikatu: "wers: [numer wersu] | brak miejsca o ID\_miejsca [id\_miejsca]".\\ \hline
-\end{tabular}
+nieprawidłowe id\_miejsca w schemacie tras &  Przerwanie działania programu. Wyświetlenie komunikatu: "wers: [numer wersu] | brak miejsca o~ID\_miejsca [id\_miejsca]".\\ \hline
+\end{longtable}
+\end{spacing}
 \end{sloppypar}
 
 
 \section{Testowanie}
-Testowaniu będą podlegać następujące przypadki:
+Opis sposobu testowania funkcjonalności programu.
+
+\subsection{Sytuacje wyjątkowe}
+Sprawdzenie poprawności obsługi sytuacji niestandardowych.
+
 \begin{enumerate}
-    \item Sytuacje wyjątkowe \begin{enumerate}
-        \item Wywołanie programu bez argumentów wejściowych
-        \item Podanie nieprawidłowej nazwy pliku
-        \item Podanie ścieżki do pustego pliku
-        \item Plik konfiguracyjny nie zawiera schematu tras
-        \item Plik zawiera powtórzone indeksy miejsca
-        \item Plik zawiera ujemne czasy tras i koszty wstępu
-    \end{enumerate}
-    \item Prawidłowe wywołania programu \begin{enumerate}
-        \item Wywołanie programu bez podania wybranych miejsc
-        \item Wywołanie programu z podaniem wybranych miejsc
-        \item Wywołanie programu dla dużej ilości danych
-    \end{enumerate}
+        \item Wywołanie programu bez argumentów wejściowych.
+        \item Podanie nieprawidłowej nazwy pliku.
+        \item Podanie ścieżki do pustego pliku.
+        \item Plik konfiguracyjny nie zawiera schematu tras.
+        \item Plik zawiera powtórzone indeksy miejsca.
+        \item Plik zawiera ujemne czasy tras i koszty wstępu.
 \end{enumerate}
+
+\subsection{Standardowe działanie programu}
+    \begin{enumerate}
+        \item Wywołanie programu bez podania wybranych miejsc.
+        \item Wywołanie programu z podaniem wybranych miejsc.
+        \item Wywołanie programu dla dużej ilości danych.
+    \end{enumerate}
+
 
 
 \end{document}
