@@ -1,0 +1,91 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{polski}
+\usepackage{fancyhdr}
+\usepackage{indentfirst}
+\usepackage{lastpage}
+\usepackage{setspace}
+\usepackage{longtable}
+
+\setlength{\parskip}{1ex plus 0.5ex minus 0.2ex}
+
+\pagestyle{fancy}
+\title{Specyfikacja implementacyjna projektu indywidualnego \textit{Bieszczadzki Komiwojażer}}
+
+\begin{document}
+\begin{titlepage}
+\makeatletter
+\noindent
+\vspace{25pt}
+\begin{center}
+\LARGE \textsc{\@title}
+\end{center}
+\makeatother
+\vspace{300pt}
+\begin{flushright}
+\noindent Wykonał: Piotr Ferdynus\\
+Sprawdził: mgr inż. Paweł Zawadzki\\
+Data: 11.11.2019\\
+\end{flushright}
+
+
+\thispagestyle{empty}
+\end{titlepage}
+
+\rhead{Piotr Ferdynus 299244}
+\lhead{}
+\cfoot{\thepage \hspace{1pt} / \pageref{LastPage}}
+\setcounter{page}{2}
+
+\section{Wprowadzenie}
+
+\subsection{Cel dokumentu}
+Sprecyzowanie sposobu implementacji projektu, który szczegółowo opisany został w specyfikacji funkcjonalnej. Określenie logiki działania programu, opisanie użytych struktur danych i zastosowanych algorytmów.
+
+\subsection{Cel projektu}
+
+\subsection{Użytkownik końcowy}
+
+\section{Środowisko deweloperskie}
+Opis parametrów, środowisk i oprogramowania, które zostanie użyte podczas pracy nad projektem.
+
+\subsection{Parametry sprzętowe}
+Podczas procesu wytwarzania oprogramowania zostaną wykorzystane dwie stacje robocze o następującej specyfikacji:
+
+\begin{verbatim}
+    Procesor AMD Ryzen 5 2500U
+    Zintegrowana karta graficzna Radeon Vega 8 Mobile
+    Pamięć RAM DDR4 8GB
+    Windows 10 Home wersja 1903
+    
+    Procesor Intel Core i5 8th gen
+    Karta graficzna NVidia Geforce GTX 1060 4GB
+    Pamięć RAM DDR4 8GB
+\end{verbatim}
+
+\subsection{Oprogramowania}
+
+Na obu komputerach zostało zainstalowane oprogramowanie pozwalające na pracę w języku programowania Java:
+
+\begin{verbatim}
+    SDK Java 11.0.2 2019-01-15 LTS
+    Java(TM) SE Runtime Environment 18.9
+    Java HotSpot(TM) 64-Bit Server VM 18.9
+    IDE Intellij IDEA Ultimate 2019.1.1 
+\end{verbatim}
+
+\section{Zasady wersjonowania}
+
+Podczas realizacji projektu zostały przyjęte ogólnie akceptowane zasady wersjonowania projektów informatycznych. Numer wersji występuje w postaci \textit{X.Y.Z}, gdzie X, Y i Z reprezentują liczby naturalne. Człon \textit{X}, indeksowany od zera, to iteracja wydań niekompatybilnych wstecznie lub wnoszących istotne zmiany w funkcjonalności oprogramowania. Człon \textit{Y} indeksowany od jedynki, reprezentuje mniejszy przyrost funkcjonalności aplikacji. Ostatnia część \textit{Z}, rozpoczynająca się od zera, informuje o poprawie błędów i niedociągnięć wykrytych przy wcześniejszych wersjach programu.
+
+\section{Diagram klas}
+
+
+\section{Struktury danych}
+
+
+\section{Algorytmy}
+
+
+\end{document}
