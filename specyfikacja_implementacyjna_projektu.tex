@@ -7,11 +7,12 @@
 \usepackage{lastpage}
 \usepackage{setspace}
 \usepackage{longtable}
+\usepackage{graphicx}
 
 \setlength{\parskip}{1ex plus 0.5ex minus 0.2ex}
 
 \pagestyle{fancy}
-\title{Specyfikacja implementacyjna projektu indywidualnego \textit{Bieszczadzki Komiwojażer}}
+\title{Specyfikacja implementacyjna projektu indywidualnego \textit{,,Bieszczadzki Komiwojażer''}}
 
 \begin{document}
 \begin{titlepage}
@@ -19,7 +20,7 @@
 \noindent
 \vspace{25pt}
 \begin{center}
-\LARGE \textsc{\@title}
+\Large\textsc{\@title}
 \end{center}
 \makeatother
 \vspace{300pt}
@@ -40,31 +41,34 @@ Data: 11.11.2019\\
 
 \section{Wprowadzenie}
 
-\subsection{Cel dokumentu}
-Sprecyzowanie sposobu implementacji projektu, który szczegółowo opisany został w specyfikacji funkcjonalnej. Określenie logiki działania programu, opisanie użytych struktur danych i zastosowanych algorytmów.
+Celem dokumentu jest sprecyzowanie sposobu implementacji funkcjonalności programu, który szczegółowo opisany został w specyfikacji funkcjonalnej. Zostanie określona logika działania programu, opisane zostaną planowane struktury danych oraz zastosowane algorytmy.
 
-\subsection{Cel projektu}
-
-\subsection{Użytkownik końcowy}
 
 \section{Środowisko deweloperskie}
-Opis parametrów, środowisk i oprogramowania, które zostanie użyte podczas pracy nad projektem.
+Opis charakterystyki sprzętu i oprogramowania, które zostanie użyte podczas pracy nad projektem.
 
 \subsection{Parametry sprzętowe}
 Podczas procesu wytwarzania oprogramowania zostaną wykorzystane dwie stacje robocze o następującej specyfikacji:
 
-\begin{verbatim}
-    Procesor AMD Ryzen 5 2500U
-    Zintegrowana karta graficzna Radeon Vega 8 Mobile
-    Pamięć RAM DDR4 8GB
-    Windows 10 Home wersja 1903
+    Mobilna stacja robocza:
     
-    Procesor Intel Core i5 8th gen
-    Karta graficzna NVidia Geforce GTX 1060 4GB
-    Pamięć RAM DDR4 8GB
+\begin{verbatim}
+        Procesor AMD Ryzen 5 2500U
+        Zintegrowana karta graficzna Radeon Vega 8 Mobile
+        Pamięć RAM DDR4 8GB
+        Windows 10 Home wersja 1903
+\end{verbatim}    
+
+    Stacjonarna stacja robocza:
+    
+\begin{verbatim}
+        Procesor Intel Core i5-7400
+        Karta graficzna NVidia Geforce GTX 1060 3GB
+        Pamięć RAM DDR4 8GB
+        Windows 10 Education wersja 1903
 \end{verbatim}
 
-\subsection{Oprogramowania}
+\subsection{Oprogramowanie}
 
 Na obu komputerach zostało zainstalowane oprogramowanie pozwalające na pracę w języku programowania Java:
 
@@ -76,16 +80,59 @@ Na obu komputerach zostało zainstalowane oprogramowanie pozwalające na pracę 
 \end{verbatim}
 
 \section{Zasady wersjonowania}
+Ustalenie sposobu wprowadzania zmian do projektu.
 
-Podczas realizacji projektu zostały przyjęte ogólnie akceptowane zasady wersjonowania projektów informatycznych. Numer wersji występuje w postaci \textit{X.Y.Z}, gdzie X, Y i Z reprezentują liczby naturalne. Człon \textit{X}, indeksowany od zera, to iteracja wydań niekompatybilnych wstecznie lub wnoszących istotne zmiany w funkcjonalności oprogramowania. Człon \textit{Y} indeksowany od jedynki, reprezentuje mniejszy przyrost funkcjonalności aplikacji. Ostatnia część \textit{Z}, rozpoczynająca się od zera, informuje o poprawie błędów i niedociągnięć wykrytych przy wcześniejszych wersjach programu.
+\subsection{Wiadomości do repozytorium}
+Komentarze zmian wprowadzanych do repozytorium będą realizować szablon: numer wersji + krótki komentarz. Szczegółowy opis numeru wersji znajduje się w sekcji \textit{Numer wersji}.
 
-\section{Diagram klas}
+\subsection{Numer wersji}
+Podczas realizacji projektu zostały przyjęte ogólnie akceptowane zasady wersjonowania projektów informatycznych. Numer wersji występuje w postaci \textit{X.Y.Z}, gdzie X, Y i Z reprezentują liczby naturalne. Człon \textit{X}, indeksowany od zera, to iteracja wydań niekompatybilnych wstecznie lub wnoszących istotne zmiany w funkcjonalności oprogramowania. Człon \textit{Y} indeksowany od jedynki, reprezentuje mniejszy przyrost funkcjonalności aplikacji. Ostatnia część \textit{Z}, indeksowana od zera, informuje o poprawie błędów w funkcjonowaniu programu.
 
+\subsection{Organizacja repozytorium}
+Repozytorium będzie składać się z gałęzi \textit{master}, \textit{dev}. Główna gałąź (\textit{master}) będzie zawierała stabilną, działającą wersję projektu. Wszelkie zmiany i dodatki funkcjonalności bedą rozwijane w gałęzi \textit{dev}. Po poprawnym zaimplementowaniu określonej funkcjonalności i uzyskaniu kolejnej iteracji programu, zostanie dokonany merge gałęzi głównej z gałęzią \textit{dev}.
+
+\section{Struktura klas programu}
+Przedstawienie i opis planowanego schematu klas gotowego programu oraz przewidywany sposób działania algorytmu.
+
+\subsection{Schemat klas}
+\includegraphics [height=9cm]{diagram_klas.pdf}
+\textit{Diagram klas ,,Bieszczadzki Komiwojażer''}
+\subsection{Opis klas}
+Przedstawienie funkcji i zadań poszczególnych klas.
+\subsubsection{PathFinder}
+
+\subsubsection{SolverForAll}
+
+\subsubsection{Path}
+
+\subsubsection{Map}
+
+\subsubsection{Reader}
+
+\subsubsection{Place}
+
+\subsection{Schemat działania}
 
 \section{Struktury danych}
+Program będzie wykorzystywał następujące struktury danych.
 
+\subsection{Kopiec}
+    Implementacja kolejki priorytetowej
+    
+\subsection{Macierz}
+    Przechowywanie ustrukturyzowanych danych
+    
+\subsection{HashMap}
+
+\subsection{ArrayList}
 
 \section{Algorytmy}
+Podczas rozwiązywania zadanego problemu program będzie korzystał z implementacji następujących algorytmów.
 
+\subsection{Algorytm Djikstry}
+Algorytm służy do znajdowania najkrótszej możliwej drogi pomiędzy wybranym wierzchołkiem a pozostałymi wierzchołkami grafu. 
+
+\subsection{Algorytm Helda-Karpa}
+Algorytm służy do znajdowania minimalnego drzewa rozpinającego dla grafu pełnego. 
 
 \end{document}
