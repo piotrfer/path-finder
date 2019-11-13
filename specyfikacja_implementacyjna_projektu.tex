@@ -41,17 +41,17 @@ Data: 13.11.2019\\
 
 \section{Wprowadzenie}
 
-Celem dokumentu jest sprecyzowanie sposobu implementacji funkcjonalności programu, który szczegółowo opisany został w specyfikacji funkcjonalnej. Zostanie określona logika działania programu, opisane zostaną planowane struktury danych oraz zastosowane algorytmy.
+Celem specyfikacji jest sprecyzowanie sposobu implementacji funkcjonalności projektu \textit{,,Bieszczadzki Komiwojażer''}. W dokumencie zostanie określona logika działania programu, opisane zostaną planowane struktury danych oraz zastosowane algorytmy.
 
 
 \section{Środowisko deweloperskie}
-Opis charakterystyki sprzętu i oprogramowania, które zostanie użyte podczas pracy nad projektem.
+Opis charakterystyki sprzętu i oprogramowania, które zostaną użyte podczas pracy nad projektem.
 
 \subsection{Parametry sprzętowe}
 Podczas procesu wytwarzania oprogramowania zostaną wykorzystane dwie stacje robocze o następującej specyfikacji:
 
     Mobilna stacja robocza:
-    
+\vspace{-8pt}    
 \begin{verbatim}
         Procesor AMD Ryzen 5 2500U
         Zintegrowana karta graficzna Radeon Vega 8 Mobile
@@ -60,7 +60,7 @@ Podczas procesu wytwarzania oprogramowania zostaną wykorzystane dwie stacje rob
 \end{verbatim}    
 
     Stacjonarna stacja robocza:
-    
+\vspace{-8pt}        
 \begin{verbatim}
         Procesor Intel Core i5-7400
         Karta graficzna NVidia Geforce GTX 1060 3GB
@@ -79,88 +79,114 @@ Na obu komputerach zostało zainstalowane oprogramowanie pozwalające na pracę 
     IDE Intellij IDEA Ultimate 2019.1.1 
 \end{verbatim}
 
-\section{Zasady wersjonowania}
+\section{Przebieg wprowadzania zmian}
 Ustalenie sposobu wprowadzania zmian do projektu.
 
 \subsection{Wiadomości do repozytorium}
 Komentarze zmian wprowadzanych do repozytorium będą realizować szablon: numer wersji + krótki komentarz. Szczegółowy opis numeru wersji znajduje się w sekcji \textit{Numer wersji}.
 
 \subsection{Numer wersji}
-Podczas realizacji projektu zostały przyjęte ogólnie akceptowane zasady wersjonowania projektów informatycznych. Numer wersji występuje w postaci \textit{X.Y.Z}, gdzie X, Y i Z reprezentują liczby naturalne. Człon \textit{X}, indeksowany od zera, to iteracja wydań niekompatybilnych wstecznie lub wnoszących istotne zmiany w funkcjonalności oprogramowania. Człon \textit{Y} indeksowany od jedynki, reprezentuje mniejszy przyrost funkcjonalności aplikacji. Ostatnia część \textit{Z}, indeksowana od zera, informuje o poprawie błędów w funkcjonowaniu programu.
+Podczas realizacji projektu zostały przyjęte ogólnie akceptowane zasady wersjonowania projektów informatycznych. Numer wersji występuje w postaci \textit{X.Y.Z}, gdzie X, Y i Z reprezentują liczby naturalne. Człon \textit{X}, indeksowany od zera, to iteracja wydań niekompatybilnych wstecznie lub wnoszących istotne zmiany w funkcjonalności oprogramowania. Człon \textit{Y}, indeksowany od jedynki, reprezentuje mniejszy przyrost funkcjonalności aplikacji. Ostatnia część \textit{Z}, indeksowana od zera, informuje o poprawie błędów w funkcjonowaniu programu.
 
 \subsection{Organizacja repozytorium}
-Repozytorium będzie składać się z gałęzi \textit{master}, \textit{dev}. Główna gałąź (\textit{master}) będzie zawierała stabilną, działającą wersję projektu. Wszelkie zmiany i dodatki funkcjonalności bedą rozwijane w gałęzi \textit{dev}. Po poprawnym zaimplementowaniu określonej funkcjonalności i uzyskaniu kolejnej iteracji programu, zostanie dokonany merge gałęzi głównej z gałęzią \textit{dev}.
+Repozytorium będzie składać się z gałęzi \textit{master} i \textit{dev}. Główna gałąź (\textit{master}) będzie zawierała stabilną, działającą wersję projektu. Wszelkie zmiany i nowe funkcjonalności bedą rozwijane w gałęzi \textit{dev}. Po poprawnym zaimplementowaniu określonej funkcjonalności i uzyskaniu kolejnej iteracji programu, zostanie dokonany merge gałęzi głównej z gałęzią \textit{dev}.
 
 \section{Struktura klas programu}
 Przedstawienie i opis planowanego schematu klas gotowego programu oraz przewidywany sposób działania algorytmu.
 
 \subsection{Schemat klas}
-\includegraphics [height=9cm]{diagram_klas.pdf} \newline
-\textit{Diagram klas ,,Bieszczadzki Komiwojażer''}
+
+\begin{center}
+    \includegraphics [height=9cm]{diagram_klas.pdf} \newline
+    \textit{Diagram klas ,,Bieszczadzki Komiwojażer''}
+\end{center}
 
 \subsection{Opis klas}
 Przedstawienie funkcji i zadań poszczególnych klas.
 
 \subsubsection{PathFinder}
-Klasa głowna odpowiadająca za obsługiwanie programu. Przyjmuje argumenty wywołania, zarządza przebiegiem rozwiązania zadanego problemu i komunikacją z użytkownikiem.
+Klasa głowna, odpowiadająca za obsługiwanie programu. Przyjmuje argumenty wywołania, zarządza przebiegiem rozwiązywania zadanego problemu i komunikacją z użytkownikiem.
 
 \subsubsection{SolverForAll}
-Klasa odpowiadająca za właściwe wyznaczenie rozwiązania. Wykorzystanie interfejsu umożliwia łatwą zmianę modułów i sposobów rozwiązywania problemu. Szczegółowy opis zastosowanych algorytmów znajduje się w części \textit{Schemat działania} i \textit{Algorytmy}.
+Klasa odpowiada za właściwe wyznaczenie rozwiązania. Szczegółowy opis działania klasy i zastosowanych w niej algorytmów znajduje się w części \textit{Schemat działania} i \textit{Algorytmy}.
 
 \subsubsection{Path}
-Klasa odpowiadająca za przechowywanie danych o rozwiązaniu. Pole \textit{path} to \textit{ArrayList<String>} zawierający następujące po sobie \textit{ID\_miejsca} trasy.
+Klasa umożliwiająca ustrukturyzowane przechowywanie wyznaczonej optymalnej ścieżki.
 
 \subsubsection{Map}
-Klasa odpowiadająca za przechowywanie danych o mapie. Zostaje wypełniona poprzez odczyt danych z pliku za pomocą klasy \textit{Reader}. Pole \textit{timeMatrix} to macierz incydencji otrzymanego grafu, którego wartości oznaczają czas przejścia pomiędzy konkretnymi wierzchołkami.
+Klasa odpowiadająca za przechowywanie danych o mapie Bieszczad i wykonywanie najważniejszych operacji. Wczytane punkty i trasy je łączące zostaną zapisane w postaci macierzy incydencji grafu skierowanego \textit{timeMatrix}, w której w odpowiednich indeksach zostanie zawarta długość trasy pomiędzy punktami według następującego schematu:
+
+\begin{center}
+    \includegraphics[height=8cm]{timeMatrix.jpg} \\
+    \textit{Schemat macierzy timeMatrix po wczytaniu danych}
+\end{center}
+
+Jeżeli dwa wierzchołki nie są połączone krawędzią, wartość przechowywana w macierzy wynosi \textit{-1}. Analogicznie uzupełniana jest macierz \textit{priceMatrix}, w której przechowywane wartości odzwierciedlają wysokość opłaty na konkretnym odcinku trasy.
+
+Metoda \textit{fillGraph} jest kluczowa dla działania programu. Wykorzystując algorytm Djikstry, opisany w sekcji \textit{Algorytmy}, uzupełnia ona brakujące krawędzie grafu, wyznaczając najkrótszą drogę pomiędzy wierzchołkami. Jeżeli najkrótsza droga przebiega przez inne wierzchołki, zostają one zapisane w postaci listy liniowej w odpowiednim polu macierzy \textit{pointsThroughMatrix}. 
+
+Metoda \textit{mapRestrict} ogranicza mapę tak, by zawierała jedynie te wierzchołki, których \textit{ID\_miejsca} znajduje się w liście \textit{chosenPoints}.
 
 \subsubsection{Reader}
 Klasa odpowiadająca za prawidłowe odczytanie danych z plików wejściowych oraz o odpowiednie zakomunikowanie o występujących w nich błędach. Metody \textit{readConfigFile()} i \textit{readChosenFile()} są odpowiedzialne za, odpowiednio, odczyt pliku konfiguracyjnego i odczyt pliku z wybranymi miejscami.
 
 \subsubsection{Place}
-Klasa przechowująca dane o miejscach odczytanych z pliku.
+Klasa pozwalająca na przechowywanie danych o miejscach odczytanych z pliku.
 
 \subsubsection{WriteOnScreen}
-Klasa przekazująca wynik końcowy użytkownikowi. Zastosowanie interfejsu umożliwi łatwą wymianę sposób komunikacji z użytkownikiem.
+Klasa wypisująca wynik końcowy.
 
 \subsection{Schemat działania}
-Klasa \textit{PathFinder} rozpoczyna analizę argumentów wejściowych. Dokonuje odczytu podanych plików poprzez klasę \textit{Reader}. Następnie wywołuje metodę \textit{fillGraph()} klasy \textit{Map}, która, wykorzystując algorytm Djikstry, uzupełnia macierz incydencji tak, by opisywała graf pełny. Jeżeli został podany plik zawierający wybrane miejsca, wywołuje metodę \textit{mapRestrict()}, by ograniczyć graf tylko do miejsc, które mają być odwiedzone. Tak przygotowane zostają przekazane do funkcji \textit{solveMap()}. Otrzymany obiekt typu \textit{Path} zostaje przekazany do metody \textit{writeOnScreen} i przekazany użytkownikowi. 
+Klasa \textit{PathFinder} rozpoczyna analizę argumentów wejściowych. Inicjalizuje odczyt plików wywołując odpowiednie metody klasy \textit{reader}. Następnie wywołuje metodę \textit{fillGraph()} klasy \textit{Map}. Szczegółowy opis działania tej metody znajduje się w sekcji \textit{Opis klas}. Jeżeli został podany plik zawierający wybrane miejsca, wywołuje metodę \textit{mapRestrict()}. Tak przygotowane dane zostają przekazane do funkcji \textit{solveMap()}. Otrzymany obiekt typu \textit{Path} zostaje przekazany do metody \textit{showPath} i wypisany w sposób zrozumiały dla użytkownika.
 
 \section{Algorytmy}
 Podczas rozwiązywania zadanego problemu program będzie korzystał z implementacji następujących algorytmów.
 
 \subsection{Algorytm Djikstry}
-Algorytm służy do znajdowania najkrótszej możliwej drogi pomiędzy wybranym wierzchołkiem a pozostałymi wierzchołkami grafu. W programie zostanie wykorzystany, by dopełnić brakujące krawędzie grafu, zastępując je najkrótszą możliwą drogą wiodącą przez jak najmniejszą ilość innych punktów. 
 
-Implementacja algorytmu wykorzystuje kolejkę priorytetową, w której priorytetem jest długość trwania trasy pomiędzy wierzchołkami. Idąc od wierzchołka początkowego, w każdej iteracji wybierany jest wierzchołek o najmniejszym koszcie. Jeżeli wierzchołek ma już określony koszt dotarcia, to wybierane jest minimum pomiędzy posiadaną wartością, a nową, ustaloną w bieżącym przebiegu algorytmu.
+\subsubsection{Opis}
+Algorytm służy do znajdowania najkrótszej możliwej drogi pomiędzy wybranym wierzchołkiem a pozostałymi wierzchołkami grafu
+\subsubsection{Zastosowanie}
+Algorytm zostanie zastosowany w metodzie \textit{fillGraph} klasy \textit{Map}, by dopełnić brakujące krawędzie grafu, zastępując je najkrótszą możliwą drogą wiodącą przez jak najmniejszą ilość punktów. 
 
-Złożoność czasowa algorytmu to O(E log V), gdzie E reprezentuje liczbę krawędzi, a V liczbę wierzchołków.
+\subsubsection{Złożoność}
+Złożoność czasowa algorytmu w przypadku implementacji przez kopiec to O(E logV), gdzie E reprezentuje liczbę krawędzi, a V liczbę wierzchołków.
 
 \subsection{Algorytm Helda-Karpa}
-Algorytm służy do znajdowania minimalnego drzewa rozpinającego dla grafu pełnego. W programie zostanie wykorzystany do wyznaczenia najkrótszej możliwej drogi zawierającej wszystkie wierzchołki w grafie. Wzór algorytmu ma postać rekurencyjną i przedstawia się następująco:
 
-    S -- zbiór wierzchołków grafu
+\subsubsection{Opis}
+Algorytm służy do znajdowania minimalnego drzewa rozpinającego dla grafu pełnego, to jest drzewa łączącego wszystkie wierzchołki grafu o najmniejszej sumie wag. Wzór algorytmu ma postać rekurencyjną i przedstawia się następująco:\\
+$$
+\left\{ \begin{array}{ll}
+D(S, p) = d_{1,p} & \textrm{gdy $s=1$}\\
+D(S, p) = min_{x \in (S-{p})}( D(S-{p}, x) + d_{x,p}). & \textrm{gdy $s>1$}\\
+\end{array} \right.
+$$
     
-    p należy do S -- wierzchołek grafu na którym ma zakończyć się droga
+S -- zbiór wierzchołków grafu
     
-    D(S, p) -- najkrótsza możliwa droga z wybranego wierzchołka początkowego, przez wszystkie wierzchołki ze zbioru S, kończąca się na wierzchołku p.
+p $\in$ S -- wierzchołek grafu na którym ma zakończyć się droga
+    
+D(S, p) -- najkrótsza możliwa droga z wybranego wierzchołka początkowego, przez wszystkie wierzchołki ze zbioru S, kończąca się na wierzchołku p.
 
-    Jeśli s=1, to D(S, p) = d1,p,
-    
-    Jeśli s>1, to D(S, p) = min x należy do (S-{p})( D(S-{p}, x) + dx,p).
+\subsubsection{Zastosowanie}
+W programie zostanie wykorzystany do wyznaczenia najkrótszej możliwej drogi zawierającej wszystkie wierzchołki w grafie.
 
-Jego złożoność czasowa wynosi O(n22n). Zapewnia dokładne wyznaczenie najkrótszej drogi przy złożoności mniejszej od O(n!).
+\subsubsection{Złożoność}
+    Złożoność czasowa algorytmu wynosi O(n$^{2}2^{n}$).
+
 
 \section{Struktury danych}
-Program będzie wykorzystywał następujące struktury danych.
+Opis wykorzystanych struktur danych i cel ich zastosowania.
 
 \subsection{Kopiec}
-    Kopiec zostanie wykorzystany do implementacji kolejki priorytetowej, opisanej szczegółowo w sekcji \textit{Algorytm Djikstry}.
+    Kopiec zostanie wykorzystany do implementacji kolejki priorytetowej, niezbędnej przy implementacji algorytmu Djikstry, opisanego w sekcji \textit{Algorytmy}.
     
 \subsection{Macierz}
-    Macierz zostanie wykorzystana do przechowywania grafu w postaci macierzy incydencji, jak również kosztu przejścia i \textit{ID\_miejsca} wierzchołków przy uzupełnionym grafie.
+    Macierz zostanie wykorzystana do przechowywania informacji o mapie wczytanej do programu.
     
 \subsection{Tablica mieszająca}
-    Tablica mieszająca (z ang. \textit{hash map}) zostanie wykorzystana do przechowywanie szczegółowych danych na temat punktów, jako klucz wykorzystując ich \textit{ID\_miejsca}.
+    Tablica mieszająca (z ang. \textit{hash table}) zostanie wykorzystana do przechowywanie szczegółowych danych na temat punktów, jako klucz wykorzystując ich \textit{ID\_miejsca}.
 
 \subsection{Lista liniowa}
     Lista liniowa w postaci \textit{ArrayList<>} zostanie wykorzystana do przechowywania listy wybranych miejsc.
