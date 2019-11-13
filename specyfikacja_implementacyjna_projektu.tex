@@ -86,10 +86,10 @@ Ustalenie sposobu wprowadzania zmian do projektu.
 Komentarze zmian wprowadzanych do repozytorium będą realizować szablon: numer wersji + krótki komentarz. Szczegółowy opis numeru wersji znajduje się w sekcji \textit{Numer wersji}.
 
 \subsection{Numer wersji}
-Podczas realizacji projektu zostały przyjęte ogólnie akceptowane zasady wersjonowania projektów informatycznych. Numer wersji występuje w postaci \textit{X.Y.Z}, gdzie X, Y i Z reprezentują liczby naturalne. Człon \textit{X}, indeksowany od zera, to iteracja wydań niekompatybilnych wstecznie lub wnoszących istotne zmiany w funkcjonalności oprogramowania. Człon \textit{Y}, indeksowany od jedynki, reprezentuje mniejszy przyrost funkcjonalności aplikacji. Ostatnia część \textit{Z}, indeksowana od zera, informuje o poprawie błędów w funkcjonowaniu programu.
+Podczas realizacji projektu zostały przyjęte ogólnie akceptowane zasady wersjonowania projektów informatycznych. Numer wersji występuje w postaci \textit{X.Y.Z}, gdzie X, Y i Z reprezentują liczby naturalne. Człon \textit{X}, indeksowany od zera, to iteracja wydań niekompatybilnych wstecznie lub wnoszących istotne zmiany w~funkcjonalności oprogramowania. Człon \textit{Y}, indeksowany od jedynki, reprezentuje mniejszy przyrost funkcjonalności aplikacji. Ostatnia część \textit{Z}, indeksowana od zera, informuje o poprawie błędów w funkcjonowaniu programu.
 
 \subsection{Organizacja repozytorium}
-Repozytorium będzie składać się z gałęzi \textit{master} i \textit{dev}. Główna gałąź (\textit{master}) będzie zawierała stabilną, działającą wersję projektu. Wszelkie zmiany i nowe funkcjonalności bedą rozwijane w gałęzi \textit{dev}. Po poprawnym zaimplementowaniu określonej funkcjonalności i uzyskaniu kolejnej iteracji programu, zostanie dokonany merge gałęzi głównej z gałęzią \textit{dev}.
+Repozytorium będzie składać się z gałęzi \textit{master} i \textit{dev}. Główna gałąź (\textit{master}) będzie zawierała stabilną, działającą wersję projektu. Wszelkie zmiany i nowe funkcjonalności będą rozwijane w gałęzi \textit{dev}. Po poprawnym zaimplementowaniu określonej funkcjonalności i uzyskaniu kolejnej iteracji programu, zostanie dokonany merge gałęzi głównej z gałęzią \textit{dev}.
 
 \section{Struktura klas programu}
 Przedstawienie i opis planowanego schematu klas gotowego programu oraz przewidywany sposób działania algorytmu.
@@ -105,7 +105,7 @@ Przedstawienie i opis planowanego schematu klas gotowego programu oraz przewidyw
 Przedstawienie funkcji i zadań poszczególnych klas.
 
 \subsubsection{PathFinder}
-Klasa głowna, odpowiadająca za obsługiwanie programu. Przyjmuje argumenty wywołania, zarządza przebiegiem rozwiązywania zadanego problemu i komunikacją z użytkownikiem.
+Klasa główna, odpowiadająca za obsługiwanie programu. Przyjmuje argumenty wywołania, zarządza przebiegiem rozwiązywania zadanego problemu i~komunikacją z użytkownikiem.
 
 \subsubsection{SolverForAll}
 Klasa odpowiada za właściwe wyznaczenie rozwiązania. Szczegółowy opis działania klasy i zastosowanych w niej algorytmów znajduje się w części \textit{Schemat działania} i \textit{Algorytmy}.
@@ -121,7 +121,7 @@ Klasa odpowiadająca za przechowywanie danych o mapie Bieszczad i wykonywanie na
     \textit{Schemat macierzy timeMatrix po wczytaniu danych}
 \end{center}
 
-Jeżeli dwa wierzchołki nie są połączone krawędzią, wartość przechowywana w macierzy wynosi \textit{-1}. Analogicznie uzupełniana jest macierz \textit{priceMatrix}, w której przechowywane wartości odzwierciedlają wysokość opłaty na konkretnym odcinku trasy.
+Jeżeli dwa wierzchołki nie są połączone krawędzią, wartość przechowywana w macierzy wynosi \textit{-1}. Analogicznie uzupełniana jest macierz \textit{priceMatrix}, w~której przechowywane wartości odzwierciedlają wysokość opłaty na konkretnym odcinku trasy.
 
 Metoda \textit{fillGraph} jest kluczowa dla działania programu. Wykorzystując algorytm Djikstry, opisany w sekcji \textit{Algorytmy}, uzupełnia ona brakujące krawędzie grafu, wyznaczając najkrótszą drogę pomiędzy wierzchołkami. Jeżeli najkrótsza droga przebiega przez inne wierzchołki, zostają one zapisane w postaci listy liniowej w odpowiednim polu macierzy \textit{pointsThroughMatrix}. 
 
@@ -131,28 +131,28 @@ Metoda \textit{mapRestrict} ogranicza mapę tak, by zawierała jedynie te wierzc
 Klasa odpowiadająca za prawidłowe odczytanie danych z plików wejściowych oraz o odpowiednie zakomunikowanie o występujących w nich błędach. Metody \textit{readConfigFile()} i \textit{readChosenFile()} są odpowiedzialne za, odpowiednio, odczyt pliku konfiguracyjnego i odczyt pliku z wybranymi miejscami.
 
 \subsubsection{Place}
-Klasa pozwalająca na przechowywanie danych o miejscach odczytanych z pliku.
+Klasa ułatwiająca przechowywanie danych o miejscach odczytanych z~pliku.
 
 \subsubsection{WriteOnScreen}
-Klasa wypisująca wynik końcowy.
+Klasa wypisująca wynik końcowy w sposób zrozumiały dla użytkownika.
 
 \subsection{Schemat działania}
 Klasa \textit{PathFinder} rozpoczyna analizę argumentów wejściowych. Inicjalizuje odczyt plików wywołując odpowiednie metody klasy \textit{reader}. Następnie wywołuje metodę \textit{fillGraph()} klasy \textit{Map}. Szczegółowy opis działania tej metody znajduje się w sekcji \textit{Opis klas}. Jeżeli został podany plik zawierający wybrane miejsca, wywołuje metodę \textit{mapRestrict()}. Tak przygotowane dane zostają przekazane do funkcji \textit{solveMap()}. Otrzymany obiekt typu \textit{Path} zostaje przekazany do metody \textit{showPath} i wypisany w sposób zrozumiały dla użytkownika.
 
 \section{Algorytmy}
-Podczas rozwiązywania zadanego problemu program będzie korzystał z implementacji następujących algorytmów.
+Opis algorytmów wykorzystanych przy implementacji projektu.
 
 \subsection{Algorytm Djikstry}
 
 \subsubsection{Opis}
-Algorytm służy do znajdowania najkrótszej możliwej drogi pomiędzy wybranym wierzchołkiem a pozostałymi wierzchołkami grafu
+Algorytm służy do znajdowania najkrótszej możliwej drogi pomiędzy wybranym wierzchołkiem a pozostałymi wierzchołkami grafu.
 \subsubsection{Zastosowanie}
 Algorytm zostanie zastosowany w metodzie \textit{fillGraph} klasy \textit{Map}, by dopełnić brakujące krawędzie grafu, zastępując je najkrótszą możliwą drogą wiodącą przez jak najmniejszą ilość punktów. 
 
 \subsubsection{Złożoność}
 Złożoność czasowa algorytmu w przypadku implementacji przez kopiec to O(E logV), gdzie E reprezentuje liczbę krawędzi, a V liczbę wierzchołków.
 
-\subsection{Algorytm Helda-Karpa}
+\subsection{Algorytm Helda--Karpa}
 
 \subsubsection{Opis}
 Algorytm służy do znajdowania minimalnego drzewa rozpinającego dla grafu pełnego, to jest drzewa łączącego wszystkie wierzchołki grafu o najmniejszej sumie wag. Wzór algorytmu ma postać rekurencyjną i przedstawia się następująco:\\
@@ -189,6 +189,6 @@ Opis wykorzystanych struktur danych i cel ich zastosowania.
     Tablica mieszająca (z ang. \textit{hash table}) zostanie wykorzystana do przechowywanie szczegółowych danych na temat punktów, jako klucz wykorzystując ich \textit{ID\_miejsca}.
 
 \subsection{Lista liniowa}
-    Lista liniowa w postaci \textit{ArrayList<>} zostanie wykorzystana do przechowywania listy wybranych miejsc.
+    Lista liniowa zaimplementowana w postaci \textit{ArrayList} zostanie wykorzystana do przechowywania listy wybranych miejsc.
 
 \end{document}
