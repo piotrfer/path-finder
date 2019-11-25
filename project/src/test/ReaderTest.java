@@ -10,10 +10,4 @@ import java.util.HashMap;
 
 public class ReaderTest {
 
-    @Test
-
-    public void shoulDoSomething(){
-        Reader.readConfigFile("C:\\Users\\piotr\\OneDrive\\Pulpit\\data\\config.txt", null, new ArrayList<>());
-    }
-
 }

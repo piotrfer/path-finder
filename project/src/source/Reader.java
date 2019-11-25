@@ -6,32 +6,65 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public abstract class Reader {
-    public static boolean readConfigFile(String path, Map map, ArrayList<String> allPlaces) {
+
+    public static PathFinder setUpData(String[] args) {
+        String configPath = args.length < 1 ? null : args[0];
+        String startingPoint = args.length < 2 ? null : args[1];
+        String chosenPath = args.length < 3 ? null : args[2];
+
+        if (configPath == null) {
+            System.err.println("You must provide config file path");
+            return null;
+        }
+        if (startingPoint == null) {
+            System.err.println("You must provide starting point id");
+            return null;
+        }
+
+        PathFinder mountainPathFinder = readConfigFile(configPath);
+        if (mountainPathFinder == null) {
+            return null;
+        }
+        mountainPathFinder.setStartingPoint(startingPoint); //exception to handle - no such point
+
+
+        if (chosenPath != null) {
+            mountainPathFinder.setChosenPlaces(readChosenFile(chosenPath)); //exception to handle - no such points
+            if( mountainPathFinder == null ){
+                System.err.println("Cannot read chosen places file. Skiping");
+            }
+        }
+
+        return mountainPathFinder;
+    }
+
+
+    public static PathFinder readConfigFile(String path) {
+        PathFinder readPathFinder = new PathFinder();
         BufferedReader reader = null;
+
+
         try {
             reader = new BufferedReader(new FileReader(path));
-            while (!reader.ready()) ;
-            allPlaces = readPlacesFromReader(reader);
-            map = readMapFromReader(reader, allPlaces);
-            System.out.println(allPlaces);
-            System.out.println(map);
+            readPathFinder.setAllPlaces(readPlacesFromReader(reader));
+            readPathFinder.setMap(readMapFromReader(reader, readPathFinder.getAllPlaces()));
+            reader.close();
         } catch (
                 IOException e) {
             System.err.println(e.getLocalizedMessage());
         } finally {
-            if (reader == null || map == null || allPlaces == null) {
-                System.out.println(map);
-                System.err.println("Data reading from file has failed");
-                return false;
+            if (reader == null || readPathFinder.getMap() == null || readPathFinder.getAllPlaces() == null) {
+                System.err.println("Config data reading from file has failed");
+                return null;
             } else {
-                System.out.println("Data has been extracted successfuly");
-                return true;
+                System.out.println("Config data has been extracted successfuly");
+                return readPathFinder;
             }
         }
     }
 
     private static ArrayList<String> readPlacesFromReader(BufferedReader reader) throws IOException {
-        String currentLine = "";
+        String currentLine;
         ArrayList<String> allPlaces = new ArrayList<>();
         while ((currentLine = reader.readLine()) != null) {
             if (currentLine.length() == 0 || currentLine.charAt(0) == '#') {
@@ -87,8 +120,12 @@ public abstract class Reader {
             String backward = words[4];
             String price = words[5];
 
-            if (!allPlaces.contains(from) || !allPlaces.contains(to)) {
-                System.out.println("The place doesn't exist");
+            if (!allPlaces.contains(from)) {
+                System.out.println("The place " + from + " doesn't exist");
+                return null;
+            }
+            if (!allPlaces.contains(to)) {
+                System.out.println("The place " + to + " doesn't exist");
                 return null;
             }
 
@@ -96,7 +133,7 @@ public abstract class Reader {
             int toIndex = allPlaces.indexOf(to);
             int forwardMinutes = timeConverter(forward);
             int backwardMinutes = timeConverter(backward);
-            double priceInPln = getPrice( price );
+            double priceInPln = getPrice(price);
 
             timeMatrix[fromIndex][toIndex] = forwardMinutes;
             timeMatrix[toIndex][fromIndex] = backwardMinutes;
@@ -117,22 +154,61 @@ public abstract class Reader {
         return minutes;
     }
 
-    private static double getPrice( String price){ //exception to handle
+    private static double getPrice(String price) { //exception to handle
         price = price.strip();
-        if( price == "--" ){
+        if (price == "--") {
             return 0;
-        }
-        else{
-            try{
+        } else {
+            try {
                 return Double.parseDouble(price);
-            } catch( NumberFormatException e){
+            } catch (NumberFormatException e) {
                 return 0;
             }
         }
 
     }
 
-    public static boolean readChosenFile(String path, ArrayList<String> chosenPlaces) {
-        return false;
+    public static ArrayList<String> readChosenFile(String path) {
+        ArrayList<String> chosenPlaces = null;
+        BufferedReader reader = null;
+        try {
+            reader = new BufferedReader(new FileReader(path));
+            String currentLine;
+            chosenPlaces = new ArrayList<>();
+            while ((currentLine = reader.readLine()) != null) {
+
+                if (currentLine.length() == 0 || currentLine.charAt(0) == '#') {
+                    continue;
+                }
+                String[] words = currentLine.split("\\|");
+                if (!isNumber(words[0])) {
+                    continue;
+                }
+                if (chosenPlaces.contains(words[1])) {
+                    System.err.println("Place " + words[1] + " already exist. Skipping.");
+                } else {
+                    chosenPlaces.add(words[1]);
+                }
+            }
+            if (chosenPlaces.size() != 0) {
+                return chosenPlaces;
+            } else {
+                System.err.println("The chosen file is empty");
+                return null;
+            }
+        } catch (IOException e) {
+            System.err.println("Invalid chosen places file.");
+            System.err.println("Data extraction from chosen places file has failed.");
+            return null;
+        } finally {
+            if (reader == null || chosenPlaces == null) {
+                System.err.println("Data extraction from chosen places file has failed.");
+                return null;
+            }
+            else{
+                return chosenPlaces;
+            }
+
+        }
     }
 }
