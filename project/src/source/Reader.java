@@ -159,7 +159,20 @@ public abstract class Reader {
             priceMatrix[toIndex][fromIndex] = priceInPln; //exception to handle = repeated route
 
         }
+
+        timeMatrix = fillBlanks(timeMatrix);
+
         return new Map(timeMatrix, priceMatrix);
+    }
+
+    private static int[][] fillBlanks(int[][] matrix){
+        int[][] nmatrix = new int[matrix.length][matrix[0].length];
+        for( int i = 0 ; i < nmatrix.length; i++){
+            for( int j = 0; j < nmatrix[i].length; j++){
+                nmatrix[i][j] = matrix[i][j] > 0 || i == j? matrix[i][j] : Integer.MAX_VALUE;
+            }
+        }
+        return nmatrix;
     }
 
     private static int timeConverter(String time) { //exception to handle

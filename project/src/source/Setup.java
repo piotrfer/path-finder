@@ -49,15 +49,14 @@ public class Setup {
     //METHODS
 
     public boolean getReady() {
-        this.map = map.deleteDiagonal();
-        if ((this.map = map.fillGraph()) == null) {
+        if (!map.fillGraph(allPlaces)) {
             return false;
         }
-        if (this.chosenPlaces != null) {
+        /*if (this.chosenPlaces != null) {
             if ((this.map = map.mapRestrict(chosenPlaces)) == null) {
                 return false;
             }
-        }
+        }*/
         return true;
     }
 

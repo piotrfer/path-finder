@@ -12,22 +12,68 @@ public class Map {
         this.priceMatrix = priceMatrix;
     }
 
-    public Map fillGraph() {
+    public boolean fillGraph(ArrayList<String> allPlaces) {
         int[][] timeMatrix = this.timeMatrix;
         double[][] priceMatrix = this.priceMatrix;
         ArrayList<String>[][] pointsThrough = new ArrayList[timeMatrix.length][timeMatrix.length];
 
-        return null;
+        for (int i = 0; i < timeMatrix.length; i++) {
+            ArrayList<String> queue = (ArrayList<String>) allPlaces.clone();
+            ArrayList<String> seen = new ArrayList<>();
+
+            int[] currentPointArray = timeMatrix[i];
+            while (queue.size() != 0) {
+                int minimumIndex = getMinimumIndex(currentPointArray, seen, allPlaces);
+                int minimumValue = currentPointArray[minimumIndex];
+                queue.remove(allPlaces.get(minimumIndex));
+                seen.add(allPlaces.get(minimumIndex));
+
+                currentPointArray = timeMatrix[minimumIndex];
+                for (int j = 0; j < currentPointArray.length; j++) {
+                    if (currentPointArray[j] == Integer.MAX_VALUE) {
+                        continue;
+                    }
+                    if (minimumValue + timeMatrix[i][minimumIndex] + currentPointArray[j] < timeMatrix[i][j]) {//jeżeli droga przez dany wierzchołek jest mniejsza
+                        timeMatrix[i][j] = minimumValue + currentPointArray[j];
+                        pointsThrough[i][j] = new ArrayList<>();
+                        if( pointsThrough[i][minimumIndex] != null){
+                            pointsThrough[i][j].addAll(pointsThrough[i][minimumIndex]);
+                        }
+                        pointsThrough[i][j].add(allPlaces.get(minimumIndex));
+                    }
+                }
+            }
+        }
+        this.pointsThroughMatrix = pointsThrough;
+        return true;
+    }
+
+    private int getMinimumIndex(int[] array, ArrayList<String> seen, ArrayList<String> allPoints) {
+        if (array == null || array.length == 0) {
+            return -1;
+        } else {
+            int minValue = Integer.MAX_VALUE;
+            int minIndex = -1;
+            for (int i = 0; i < array.length; i++) {
+                if( seen.contains(allPoints.get(i)))
+                    continue;
+                if (minValue > array[i]) {
+                    minValue = array[i];
+                    minIndex = i;
+                }
+            }
+            return minIndex != - 1? minIndex: !seen.isEmpty()? allPoints.indexOf(seen.get(0)): -1;
+        }
     }
 
     public Map mapRestrict(ArrayList<String> chosenPoints) {
         return null;
     }
 
-    public Map deleteDiagonal(){
+    public Map deleteDiagonal() {
         int[][] timeMatrix = this.timeMatrix;
         double[][] priceMatrix = this.priceMatrix;
-        for( int i = 0; i < timeMatrix.length; i++){
+        for (int i = 0; i < timeMatrix.length; i++) {
             timeMatrix[i][i] = -1;
             priceMatrix[i][i] = -1;
         }

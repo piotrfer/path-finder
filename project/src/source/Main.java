@@ -19,6 +19,11 @@ public class Main {
         if(!mountainSetup.getReady()){
             System.exit(1);
         }
+        System.out.println("AFTER FILLING");
+        System.out.println(mountainSetup.getMap());
+        System.out.println(mountainSetup.getAllPlaces());
+        System.out.println(mountainSetup.getChosenPlaces());
+
         Path optimalPath;
         /*if( (optimalPath = Solver.solveMap(mountainSetup)) == null){
             System.exit(1);
