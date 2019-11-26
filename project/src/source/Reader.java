@@ -7,58 +7,77 @@ import java.util.ArrayList;
 
 public abstract class Reader {
 
-    public static PathFinder setUpData(String[] args) {
-        String configPath = args.length < 1 ? null : args[0];
-        String startingPoint = args.length < 2 ? null : args[1];
-        String chosenPath = args.length < 3 ? null : args[2];
+    //PUBLIC
+
+    public static Setup setUpData(String[] args) {
+
+        String configPath = args.length < 1 ? null : args[0].strip();
+        String startingPoint = args.length < 2 ? null : args[1].strip();
+        String chosenPath = args.length < 3 ? null : args[2].strip();
+
+        if (args.length == 0) {
+            showHelp();
+            return null;
+        }
 
         if (configPath == null) {
-            System.err.println("You must provide config file path");
+            System.err.println("Argument wejściowy: brak podanego pliku konfiguracyjnego");
             return null;
         }
         if (startingPoint == null) {
-            System.err.println("You must provide starting point id");
+            System.err.println("Argument wejściowy: brak podanego punktu startowego");
             return null;
         }
 
-        PathFinder mountainPathFinder = readConfigFile(configPath);
-        if (mountainPathFinder == null) {
+        Setup mountainSetup = readConfigFile(configPath);
+        if (mountainSetup == null) {
             return null;
         }
-        mountainPathFinder.setStartingPoint(startingPoint); //exception to handle - no such point
-
+        if (mountainSetup.getAllPlaces().contains(startingPoint)){
+            mountainSetup.setStartingPoint(startingPoint);
+        }
+        else{
+            System.err.println(mountainSetup.getAllPlaces());
+            ArrayList<String> tmp = mountainSetup.getAllPlaces();
+            System.err.println(tmp.contains(startingPoint));
+            System.err.println("Argument wejściowy: punkt startowy " + startingPoint + " nie istnieje na mapie.");
+            return null;
+        }
 
         if (chosenPath != null) {
-            mountainPathFinder.setChosenPlaces(readChosenFile(chosenPath)); //exception to handle - no such points
-            if( mountainPathFinder == null ){
-                System.err.println("Cannot read chosen places file. Skiping");
+            mountainSetup.setChosenPlaces(readChosenFile(chosenPath)); //exception to handle - no such points
+            if (mountainSetup == null) {
+                System.err.println("Plik wybranych miejsc: krytyczny błąd odczytu pliku.");
+                return null;
             }
         }
 
-        return mountainPathFinder;
+        return mountainSetup;
     }
 
+    //PRIVATE
 
-    public static PathFinder readConfigFile(String path) {
-        PathFinder readPathFinder = new PathFinder();
+
+    private static Setup readConfigFile(String path) {
+        Setup readSetup = new Setup();
         BufferedReader reader = null;
 
 
         try {
             reader = new BufferedReader(new FileReader(path));
-            readPathFinder.setAllPlaces(readPlacesFromReader(reader));
-            readPathFinder.setMap(readMapFromReader(reader, readPathFinder.getAllPlaces()));
+            readSetup.setAllPlaces(readPlacesFromReader(reader));
+            readSetup.setMap(readMapFromReader(reader, readSetup.getAllPlaces()));
             reader.close();
         } catch (
                 IOException e) {
-            System.err.println(e.getLocalizedMessage());
+            System.err.println("Plik konfiguracyjny: krytyczny błąd odczytu pliku.");
         } finally {
-            if (reader == null || readPathFinder.getMap() == null || readPathFinder.getAllPlaces() == null) {
-                System.err.println("Config data reading from file has failed");
+            if (reader == null || readSetup.getMap() == null || readSetup.getAllPlaces() == null) {
+                System.err.println("Plik konfiguracyjny: krytyczny błąd odczytu pliku.");
                 return null;
             } else {
-                System.out.println("Config data has been extracted successfuly");
-                return readPathFinder;
+                System.out.println("Plik konfiguracyjny: odczyt zakończył się pomyślnie.");
+                return readSetup;
             }
         }
     }
@@ -78,10 +97,9 @@ public abstract class Reader {
                 continue;
             }
             reader.mark(0);
-            Place newPlace = new Place(words[1], words[2], words[3]);
+            Place newPlace = new Place(words[1].strip(), words[2], words[3]);
             if (allPlaces.contains(newPlace.getId())) {
-                System.err.println("The place already exist"); // if place already exist
-                return null;
+                System.err.println("Plik konfiguracyjny: Miejsce o id \"" + words[1] + "\" już zostało podane w pliku. Pomijam: \n" + currentLine + "\n" ); // if place already exist
             } else {
                 allPlaces.add(newPlace.getId());
             }
@@ -114,18 +132,18 @@ public abstract class Reader {
             if (!isNumber(words[0])) {
                 continue;
             }
-            String from = words[1];
-            String to = words[2];
-            String forward = words[3];
-            String backward = words[4];
-            String price = words[5];
+            String from = words[1].strip();
+            String to = words[2].strip();
+            String forward = words[3].strip();
+            String backward = words[4].strip();
+            String price = words[5].strip();
 
             if (!allPlaces.contains(from)) {
-                System.out.println("The place " + from + " doesn't exist");
+                System.out.println("Plik konfiguracyjny: Miejsce " + from + " w siatce połączeń nie istnieje na mapie.");
                 return null;
             }
             if (!allPlaces.contains(to)) {
-                System.out.println("The place " + to + " doesn't exist");
+                System.out.println("Plik konfiguracyjny: Miejsce " + to + " w siatce połączeń nie istnieje na mapie.");
                 return null;
             }
 
@@ -168,7 +186,11 @@ public abstract class Reader {
 
     }
 
-    public static ArrayList<String> readChosenFile(String path) {
+    private static void showHelp() {
+        System.out.println("Tu będzie wyświetlać się instrukcja obsługi programu.");
+    }
+
+    private static ArrayList<String> readChosenFile(String path) {
         ArrayList<String> chosenPlaces = null;
         BufferedReader reader = null;
         try {
@@ -184,28 +206,27 @@ public abstract class Reader {
                 if (!isNumber(words[0])) {
                     continue;
                 }
-                if (chosenPlaces.contains(words[1])) {
-                    System.err.println("Place " + words[1] + " already exist. Skipping.");
+                String placeToAdd = words[1].strip();
+                if (chosenPlaces.contains(placeToAdd)) {
+                    System.err.println("Plik wybranych miejsc: Miejsce " + words[1] + " już zostało wybrane. Pomijam.");
                 } else {
-                    chosenPlaces.add(words[1]);
+                    chosenPlaces.add(placeToAdd);
                 }
             }
             if (chosenPlaces.size() != 0) {
                 return chosenPlaces;
             } else {
-                System.err.println("The chosen file is empty");
+                System.err.println("Plik wybranych miejsc: plik jest pusty.");
                 return null;
             }
         } catch (IOException e) {
-            System.err.println("Invalid chosen places file.");
-            System.err.println("Data extraction from chosen places file has failed.");
+            System.err.println("Plik wybranych miejsc: krytyczny błąd odczytu pliku");
             return null;
         } finally {
             if (reader == null || chosenPlaces == null) {
-                System.err.println("Data extraction from chosen places file has failed.");
+                System.err.println("Plik wybranych miejsc: krytyczny błąd odczytu pliku");
                 return null;
-            }
-            else{
+            } else {
                 return chosenPlaces;
             }
 

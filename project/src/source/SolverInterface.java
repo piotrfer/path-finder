@@ -1,5 +1,5 @@
 package source;
 
-public interface SolveForAllInterface {
+public interface SolverInterface {
     Path solveMap( Map map);
 }

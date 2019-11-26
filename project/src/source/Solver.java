@@ -1,6 +1,6 @@
 package source;
 
-public class SolveForAll implements SolveForAllInterface {
+public class Solver implements SolverInterface {
     @Override
     public Path solveMap(Map map) {
         return null;
