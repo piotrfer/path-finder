@@ -8,6 +8,7 @@ public class Setup {
     private String startingPoint;
     private ArrayList<String> chosenPlaces;
     private ArrayList<String> allPlaces;
+    private ArrayList<Place> fullData;
 
     //GETTERS AND SETTERS
 
@@ -45,6 +46,13 @@ public class Setup {
         this.allPlaces = allPlaces;
     }
 
+    public ArrayList<Place> getFullData() {
+        return fullData;
+    }
+
+    public void setFullData(ArrayList<Place> fullData) {
+        this.fullData = fullData;
+    }
 
     //METHODS
 
@@ -60,6 +68,7 @@ public class Setup {
         System.out.println("Przygotowanie danych przebiegło pomyślnie.");
         return true;
     }
+
 
 
 }

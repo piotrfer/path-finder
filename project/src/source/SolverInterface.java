@@ -1,5 +1,7 @@
 package source;
 
 public interface SolverInterface {
-    Path solveMap( Map map);
+    static Path solveMap(Setup setup) {
+        return null;
+    }
 }

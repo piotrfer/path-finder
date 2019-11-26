@@ -20,10 +20,10 @@ public class Main {
         System.out.println(mountainSetup.getChosenPlaces());
 
         Path optimalPath;
-        /*if( (optimalPath = Solver.solveMap(mountainSetup)) == null){
+        if( (optimalPath = Solver.solveMap(mountainSetup)) == null){
             System.exit(1);
         }
-        if( !WriteOnScreen.showPath(optimalPath)){
+        /*if( !WriteOnScreen.showPath(optimalPath)){
             System.exit(1);
         } */
 

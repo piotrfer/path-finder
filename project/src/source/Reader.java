@@ -85,6 +85,8 @@ public abstract class Reader {
     private static ArrayList<String> readPlacesFromReader(BufferedReader reader) throws IOException {
         String currentLine;
         ArrayList<String> allPlaces = new ArrayList<>();
+        ArrayList<Place> fullData = new ArrayList<>();
+
         while ((currentLine = reader.readLine()) != null) {
             if (currentLine.length() == 0 || currentLine.charAt(0) == '#') {
                 continue;
@@ -102,6 +104,7 @@ public abstract class Reader {
                 System.err.println("Plik konfiguracyjny: Miejsce o id \"" + words[1] + "\" już zostało podane w pliku. Pomijam: \n" + currentLine + "\n" ); // if place already exist
             } else {
                 allPlaces.add(newPlace.getId());
+                fullData.add(newPlace);
             }
         }
         return allPlaces;

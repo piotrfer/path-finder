@@ -8,6 +8,18 @@ public class Map {
     private ArrayList<String>[][] pointsThroughMatrix;
     private double[][] priceMatrix;
 
+    public int[][] getTimeMatrix() {
+        return timeMatrix;
+    }
+
+    public ArrayList<String>[][] getPointsThroughMatrix() {
+        return pointsThroughMatrix;
+    }
+
+    public double[][] getPriceMatrix() {
+        return priceMatrix;
+    }
+
     public Map(int[][] timeMatrix, double[][] priceMatrix) {
         this.timeMatrix = timeMatrix;
         this.priceMatrix = priceMatrix;
