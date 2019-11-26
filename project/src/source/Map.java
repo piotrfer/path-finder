@@ -1,6 +1,7 @@
 package source;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Map {
     private int[][] timeMatrix;
@@ -33,14 +34,27 @@ public class Map {
                     if (currentPointArray[j] == Integer.MAX_VALUE) {
                         continue;
                     }
-                    if (minimumValue + timeMatrix[i][minimumIndex] + currentPointArray[j] < timeMatrix[i][j]) {//jeżeli droga przez dany wierzchołek jest mniejsza
-                        timeMatrix[i][j] = minimumValue + currentPointArray[j];
+                    if (timeMatrix[i][minimumIndex] + currentPointArray[j] < timeMatrix[i][j]) {//jeżeli droga przez dany wierzchołek jest mniejsza
+                        timeMatrix[i][j] = timeMatrix[i][minimumIndex] + currentPointArray[j];
                         pointsThrough[i][j] = new ArrayList<>();
-                        if( pointsThrough[i][minimumIndex] != null){
+                        if (pointsThrough[i][minimumIndex] != null) {
                             pointsThrough[i][j].addAll(pointsThrough[i][minimumIndex]);
                         }
                         pointsThrough[i][j].add(allPlaces.get(minimumIndex));
+                        if (pointsThrough[minimumIndex][j] != null) {
+                            pointsThrough[i][j].addAll(pointsThrough[minimumIndex][j]);
+                        }
+
+
+
+                        System.out.println(allPlaces.get(i) + " | " + allPlaces.get(minimumIndex) + " | " + allPlaces.get(i) + "->" + allPlaces.get(minimumIndex) + " " + (timeMatrix[i][minimumIndex]) + " | " + allPlaces.get(i) + "->" + allPlaces.get(j) + " " + (timeMatrix[i][minimumIndex] + currentPointArray[j]) + " AKTUALNA NAJKRÓTSZA DROGA: " + timeMatrix[i][j]);
+                        if (pointsThrough[i][j] != null) {
+                            System.out.println(pointsThrough[i][j]);
+                        } else {
+                            System.out.println("[]");
+                        }
                     }
+
                 }
             }
         }
@@ -55,14 +69,14 @@ public class Map {
             int minValue = Integer.MAX_VALUE;
             int minIndex = -1;
             for (int i = 0; i < array.length; i++) {
-                if( seen.contains(allPoints.get(i)))
+                if (seen.contains(allPoints.get(i)))
                     continue;
                 if (minValue > array[i]) {
                     minValue = array[i];
                     minIndex = i;
                 }
             }
-            return minIndex != - 1? minIndex: !seen.isEmpty()? allPoints.indexOf(seen.get(0)): -1;
+            return minIndex != -1 ? minIndex : !seen.isEmpty() ? allPoints.indexOf(seen.get(0)) : -1;
         }
     }
 
@@ -100,6 +114,20 @@ public class Map {
                 b.append(priceMatrix[i][j]).append(", ");
             }
             b.append(("] \n"));
+        }
+
+        if (pointsThroughMatrix != null) {
+            b.append("\n POINTS THROUGH: \n");
+            for (int i = 0; i < pointsThroughMatrix.length; i++) {
+                for (int j = 0; j < pointsThroughMatrix[i].length; j++) {
+                    if (pointsThroughMatrix[i][j] != null) {
+                        b.append(Arrays.toString(pointsThroughMatrix[i][j].toArray()));
+                    } else {
+                        b.append("[]");
+                    }
+                }
+                b.append('\n');
+            }
         }
 
         return b.toString();
