@@ -2,7 +2,7 @@ package source;
 
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Program jest we wczesnej fazie rozwoju");
+        System.out.println("Program jest w trakcie produkcji");
         System.out.println(" ========================================== ");
 
 
@@ -10,15 +10,10 @@ public class Main {
         if((mountainSetup = Reader.setUpData(args)) == null){
             System.exit(1);
         }
-
-        System.out.println(mountainSetup.getMap());
-        System.out.println(mountainSetup.getAllPlaces());
-        System.out.println(mountainSetup.getChosenPlaces());
-
-
         if(!mountainSetup.getReady()){
             System.exit(1);
         }
+
         System.out.println("AFTER FILLING");
         System.out.println(mountainSetup.getMap());
         System.out.println(mountainSetup.getAllPlaces());

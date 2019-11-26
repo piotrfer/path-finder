@@ -52,11 +52,11 @@ public class Setup {
         if (!map.fillGraph(allPlaces)) {
             return false;
         }
-        /*if (this.chosenPlaces != null) {
-            if ((this.map = map.mapRestrict(chosenPlaces)) == null) {
+        if (this.chosenPlaces != null) {
+            if (!map.mapRestrict(chosenPlaces, allPlaces)) {
                 return false;
             }
-        }*/
+        }
         return true;
     }
 

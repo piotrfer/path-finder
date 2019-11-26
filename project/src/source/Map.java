@@ -25,7 +25,6 @@ public class Map {
             int[] currentPointArray = timeMatrix[i];
             while (queue.size() != 0) {
                 int minimumIndex = getMinimumIndex(currentPointArray, seen, allPlaces);
-                int minimumValue = currentPointArray[minimumIndex];
                 queue.remove(allPlaces.get(minimumIndex));
                 seen.add(allPlaces.get(minimumIndex));
 
@@ -44,8 +43,6 @@ public class Map {
                         if (pointsThrough[minimumIndex][j] != null) {
                             pointsThrough[i][j].addAll(pointsThrough[minimumIndex][j]);
                         }
-
-
 
                         System.out.println(allPlaces.get(i) + " | " + allPlaces.get(minimumIndex) + " | " + allPlaces.get(i) + "->" + allPlaces.get(minimumIndex) + " " + (timeMatrix[i][minimumIndex]) + " | " + allPlaces.get(i) + "->" + allPlaces.get(j) + " " + (timeMatrix[i][minimumIndex] + currentPointArray[j]) + " AKTUALNA NAJKRÓTSZA DROGA: " + timeMatrix[i][j]);
                         if (pointsThrough[i][j] != null) {
@@ -80,20 +77,38 @@ public class Map {
         }
     }
 
-    public Map mapRestrict(ArrayList<String> chosenPoints) {
-        return null;
-    }
+    public boolean mapRestrict(ArrayList<String> chosenPoints, ArrayList<String> allPlaces) {
+        int size = chosenPoints.size();
+        int[][] ntimeMatrix = new int[size][size];
+        double[][] npriceMatrix = new double[size][size];
+        ArrayList<String>[][] npointsThrough = new ArrayList[size][size];
+        ArrayList<Integer> common = new ArrayList<>();
 
-    public Map deleteDiagonal() {
-        int[][] timeMatrix = this.timeMatrix;
-        double[][] priceMatrix = this.priceMatrix;
-        for (int i = 0; i < timeMatrix.length; i++) {
-            timeMatrix[i][i] = -1;
-            priceMatrix[i][i] = -1;
+        for(int i = 0; i < allPlaces.size(); i++){
+            if( chosenPoints.contains(allPlaces.get(i))){
+                common.add(i);
+            }
         }
-        return new Map(timeMatrix, priceMatrix);
-    }
 
+        int n = 0;
+        int m = 0;
+
+        for( int i : common ){
+            for( int j : common){
+                ntimeMatrix[n][m] = this.timeMatrix[i][j];
+                npriceMatrix[n][m] = this.priceMatrix[i][j];
+                npointsThrough[n][m] = this.pointsThroughMatrix[i][j];
+                m++;
+            }
+            n++;
+            m = 0;
+        }
+
+        this.timeMatrix = ntimeMatrix;
+        this.pointsThroughMatrix = npointsThrough;
+        this.priceMatrix = npriceMatrix;
+        return true;
+    }
 
     //tmp
     @Override
@@ -132,15 +147,4 @@ public class Map {
 
         return b.toString();
     }
-
-
-    /*
-    @Override
-    public Map clone() {
-        int[][] timeMatrix;
-        ArrayList<String>[][] pointsThroughMatrix;
-        double[][] priceMatrix;
-        boolean isComplete = false;
-    } */
-
 }
