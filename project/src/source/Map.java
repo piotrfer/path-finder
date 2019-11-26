@@ -36,7 +36,7 @@ public class Map {
                     int timeBy = timeMatrix[start][by] + byTimeArray[finish];
                     double priceBy = priceMatrix[start][by] + priceMatrix[by][finish];
                     if ( timeBy < timeMatrix[start][finish] || (timeBy == timeMatrix[start][finish] && priceBy < priceMatrix[start][finish])) {//jeżeli droga przez dany wierzchołek jest mniejsza
-                        System.out.println(allPlaces.get(start) + " | " + allPlaces.get(finish) + " | " + allPlaces.get(start) + "->" + allPlaces.get(by) + "->" + allPlaces.get(finish) + " " + (timeBy) + " AKTUALNA NAJKRÓTSZA DROGA: " + timeMatrix[start][finish]);
+                        //System.out.println(allPlaces.get(start) + " | " + allPlaces.get(finish) + " | " + allPlaces.get(start) + "->" + allPlaces.get(by) + "->" + allPlaces.get(finish) + " " + (timeBy) + " AKTUALNA NAJKRÓTSZA DROGA: " + timeMatrix[start][finish]);
 
                         timeMatrix[start][finish] = timeBy;
                         pointsThrough[start][finish] = new ArrayList<>();
@@ -53,18 +53,18 @@ public class Map {
 
                         priceMatrix[start][finish] = priceBy;
 
-                        if (pointsThrough[start][finish] != null) {
+                        /*if (pointsThrough[start][finish] != null) {
                             System.out.println(pointsThrough[start][finish]);
                         } else {
                             System.out.println("[]");
-                        }
+                        } */
                     }
                 }
             }
         }
         this.pointsThroughMatrix = pointsThrough;
 
-        if( isGraphUncompleted(timeMatrix, allPlaces) ){
+        if( !isGraphConsistent(timeMatrix, allPlaces) ){
             return false;
         }
         else {
@@ -72,16 +72,23 @@ public class Map {
         }
     }
 
-    private boolean isGraphUncompleted( int[][] timeMatrix, ArrayList<String> allPlaces ){
-        for(int i = 0; i < timeMatrix.length; i++){
+    private boolean isGraphConsistent(int[][] timeMatrix, ArrayList<String> allPlaces ){
+        for(int i = 0; i < timeMatrix.length - 1; i++){
             for(int j = 0; j < timeMatrix[i].length; j++){
-                if( timeMatrix[i][j] == Integer.MAX_VALUE && timeMatrix[j][i] == Integer.MAX_VALUE){
-                    System.err.println("Graf jest niespójny. Wierzchołek " + allPlaces.get(j) + " nie jest połączony z innymi.");
-                    return true;
+                if( timeMatrix[i][j] == Integer.MAX_VALUE ){
+                    int detached;
+                    if( timeMatrix[i+1][j] == Integer.MAX_VALUE){
+                        detached = j;
+                    }
+                    else{
+                        detached = i;
+                    }
+                    System.err.println("Graf jest niespójny. Wierzchołek " + allPlaces.get(detached) + " nie jest połączony z innymi.");
+                    return false;
                 }
             }
         }
-        return false;
+        return true;
     }
 
     private int getMinimumIndex(int[] array, ArrayList<String> queue, ArrayList<String> allPoints) {

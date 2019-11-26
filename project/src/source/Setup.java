@@ -57,6 +57,7 @@ public class Setup {
                 return false;
             }
         }
+        System.out.println("Przygotowanie danych przebiegło pomyślnie.");
         return true;
     }
 
