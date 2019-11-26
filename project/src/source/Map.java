@@ -15,6 +15,7 @@ public class Map {
     public Map fillGraph() {
         int[][] timeMatrix = this.timeMatrix;
         double[][] priceMatrix = this.priceMatrix;
+        ArrayList<String>[][] pointsThrough = new ArrayList[timeMatrix.length][timeMatrix.length];
 
         return null;
     }
