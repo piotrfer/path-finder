@@ -240,6 +240,7 @@ public abstract class Reader {
                 System.err.println("Plik wybranych miejsc: krytyczny błąd odczytu pliku");
                 return null;
             } else {
+                System.out.println("Plik wybranych miejsc: odczyt zakończył się pomyślnie.");
                 return chosenPlaces;
             }
 
