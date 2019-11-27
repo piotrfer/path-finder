@@ -2,8 +2,8 @@ package source;
 
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Program jest w trakcie produkcji");
-        System.out.println(" ========================================== ");
+        System.out.println("Program jest w trakcie testowania");
+        System.out.println("===================================");
 
 
         Setup mountainSetup;
@@ -13,11 +13,6 @@ public class Main {
         if (!mountainSetup.getReady()) {
             System.exit(1);
         }
-
-        System.out.println("AFTER FILLING");
-        System.out.println(mountainSetup.getMap());
-        System.out.println(mountainSetup.getAllPlaces());
-        System.out.println(mountainSetup.getChosenPlaces());
 
         Solution s;
         Solver heldKarp = new Solver();

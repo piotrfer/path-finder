@@ -8,9 +8,19 @@ public class Setup {
     private String startingPoint;
     private ArrayList<String> chosenPlaces;
     private ArrayList<String> allPlaces;
-    private ArrayList<Place> fullData;
 
-    //GETTERS AND SETTERS
+    public boolean getReady() {
+        if (!map.fillGraph(allPlaces)) {
+            return false;
+        }
+        if (this.chosenPlaces != null) {
+            if (!map.mapRestrict(chosenPlaces, allPlaces)) {
+                return false;
+            }
+        }
+        System.out.println("Przygotowanie danych przebiegło pomyślnie.");
+        return true;
+    }
 
     public Map getMap() {
         return map;
@@ -45,30 +55,5 @@ public class Setup {
     public void setAllPlaces(ArrayList<String> allPlaces) {
         this.allPlaces = allPlaces;
     }
-
-    public ArrayList<Place> getFullData() {
-        return fullData;
-    }
-
-    public void setFullData(ArrayList<Place> fullData) {
-        this.fullData = fullData;
-    }
-
-    //METHODS
-
-    public boolean getReady() {
-        if (!map.fillGraph(allPlaces)) {
-            return false;
-        }
-        if (this.chosenPlaces != null) {
-            if (!map.mapRestrict(chosenPlaces, allPlaces)) {
-                return false;
-            }
-        }
-        System.out.println("Przygotowanie danych przebiegło pomyślnie.");
-        return true;
-    }
-
-
 
 }

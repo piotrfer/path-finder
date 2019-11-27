@@ -6,11 +6,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public abstract class Reader {
-
-    //PUBLIC
-
     public static Setup setUpData(String[] args) {
-
         String configPath = args.length < 1 ? null : args[0].strip();
         String startingPoint = args.length < 2 ? null : args[1].strip();
         String chosenPath = args.length < 3 ? null : args[2].strip();
@@ -29,35 +25,32 @@ public abstract class Reader {
             return null;
         }
 
-        Setup mountainSetup = readConfigFile(configPath);
-        if (mountainSetup == null) {
+        System.out.println("Argumenty wejściowe: wszystkie argumenty zostały wczytane.");
+
+        Setup setup = readConfigFile(configPath);
+        if (setup == null) {
             return null;
         }
-        if (mountainSetup.getAllPlaces().contains(startingPoint)){
-            mountainSetup.setStartingPoint(startingPoint);
-        }
-        else{
-            System.err.println(mountainSetup.getAllPlaces());
-            ArrayList<String> tmp = mountainSetup.getAllPlaces();
+        if (setup.getAllPlaces().contains(startingPoint)) {
+            setup.setStartingPoint(startingPoint);
+        } else {
+            System.err.println(setup.getAllPlaces());
+            ArrayList<String> tmp = setup.getAllPlaces();
             System.err.println(tmp.contains(startingPoint));
-            System.err.println(mountainSetup.getAllPlaces());
+            System.err.println(setup.getAllPlaces());
             System.err.println("Argument wejściowy: punkt startowy " + startingPoint + " nie istnieje na mapie.");
             return null;
         }
 
         if (chosenPath != null) {
-            mountainSetup.setChosenPlaces(readChosenFile(chosenPath)); //exception to handle - no such points
-            if (mountainSetup == null) {
+            setup.setChosenPlaces(readChosenFile(chosenPath));
+            if (setup == null) {
                 System.err.println("Plik wybranych miejsc: krytyczny błąd odczytu pliku.");
                 return null;
             }
         }
-
-        return mountainSetup;
+        return setup;
     }
-
-    //PRIVATE
-
 
     private static Setup readConfigFile(String path) {
         Setup readSetup = new Setup();
@@ -86,7 +79,6 @@ public abstract class Reader {
     private static ArrayList<String> readPlacesFromReader(BufferedReader reader) throws IOException {
         String currentLine;
         ArrayList<String> allPlaces = new ArrayList<>();
-        ArrayList<Place> fullData = new ArrayList<>();
 
         while ((currentLine = reader.readLine()) != null) {
             if (currentLine.length() == 0 || currentLine.charAt(0) == '#') {
@@ -100,18 +92,17 @@ public abstract class Reader {
                 continue;
             }
             reader.mark(0);
-            Place newPlace = new Place(words[1].strip(), words[2], words[3]);
-            if (allPlaces.contains(newPlace.getId())) {
-                System.err.println("Plik konfiguracyjny: Miejsce o id \"" + words[1] + "\" już zostało podane w pliku. Pomijam: \n" + currentLine + "\n" ); // if place already exist
+            String id = words[1].strip();
+            if (allPlaces.contains(id)) {
+                System.err.println("Plik konfiguracyjny: Miejsce o id \"" + words[1] + "\" już zostało podane w pliku. Pomijam: \n" + currentLine + "\n");
             } else {
-                allPlaces.add(newPlace.getId());
-                fullData.add(newPlace);
+                allPlaces.add(id);
             }
         }
         return allPlaces;
     }
 
-    private static boolean isNumber(String word) { //mało elegancka funkcja na razie
+    private static boolean isNumber(String word) {
         word = word.strip();
         for (char c : word.toCharArray()) {
             if (!Character.isDigit(c) && c != '.') {
@@ -136,6 +127,7 @@ public abstract class Reader {
             if (!isNumber(words[0])) {
                 continue;
             }
+            String lp = words[0];
             String from = words[1].strip();
             String to = words[2].strip();
             String forward = words[3].strip();
@@ -143,11 +135,11 @@ public abstract class Reader {
             String price = words[5].strip();
 
             if (!allPlaces.contains(from)) {
-                System.out.println("Plik konfiguracyjny: Miejsce " + from + " w siatce połączeń nie istnieje na mapie.");
+                System.err.println("Plik konfiguracyjny: lp.: " + lp + ": Miejsce " + from + " w siatce połączeń nie istnieje na mapie.");
                 return null;
             }
             if (!allPlaces.contains(to)) {
-                System.out.println("Plik konfiguracyjny: Miejsce " + to + " w siatce połączeń nie istnieje na mapie.");
+                System.err.println("Plik konfiguracyjny: lp.: " + lp + ": Miejsce " + to + " w siatce połączeń nie istnieje na mapie.");
                 return null;
             }
 
@@ -155,13 +147,26 @@ public abstract class Reader {
             int toIndex = allPlaces.indexOf(to);
             int forwardMinutes = timeConverter(forward);
             int backwardMinutes = timeConverter(backward);
-            double priceInPln = getPrice(price);
+            double priceInPln;
+            try {
+                priceInPln = getPrice(price);
+            } catch (NumberFormatException e) {
+                System.err.println("Plik konfiguracyjny: lp.: " + lp + "Podana kwota nie jest liczbą! Przyjmuję wstęp darmowy.");
+                priceInPln = 0;
+            }
+            if (priceInPln < 0) {
+                System.err.println("Plik konfiguracyjny: lp.: " + lp + ": Koszt trasy nie może być ujemny! Przyjmuję wstęp darmowy.");
+                priceInPln = 0;
+            }
+            if (timeMatrix[fromIndex][toIndex] != 0) {
+                System.err.println("Plik konfiguracyjny: lp.: " + lp + "Takie połączenie już istnieje! Pomijam linię.");
+            } else {
+                timeMatrix[fromIndex][toIndex] = forwardMinutes;
+                timeMatrix[toIndex][fromIndex] = backwardMinutes;
+                priceMatrix[fromIndex][toIndex] = priceInPln;
+                priceMatrix[toIndex][fromIndex] = priceInPln;
 
-            timeMatrix[fromIndex][toIndex] = forwardMinutes;
-            timeMatrix[toIndex][fromIndex] = backwardMinutes;
-            priceMatrix[fromIndex][toIndex] = priceInPln;
-            priceMatrix[toIndex][fromIndex] = priceInPln; //exception to handle = repeated route
-
+            }
         }
 
         timeMatrix = fillBlanks(timeMatrix);
@@ -169,14 +174,14 @@ public abstract class Reader {
         return new Map(timeMatrix, priceMatrix);
     }
 
-    private static int[][] fillBlanks(int[][] matrix){
-        int[][] nmatrix = new int[matrix.length][matrix[0].length];
-        for( int i = 0 ; i < nmatrix.length; i++){
-            for( int j = 0; j < nmatrix[i].length; j++){
-                nmatrix[i][j] = matrix[i][j] > 0 || i == j? matrix[i][j] : Integer.MAX_VALUE;
+    private static int[][] fillBlanks(int[][] matrix) {
+        int[][] newMatrix = new int[matrix.length][matrix[0].length];
+        for (int i = 0; i < newMatrix.length; i++) {
+            for (int j = 0; j < newMatrix[i].length; j++) {
+                newMatrix[i][j] = matrix[i][j] > 0 || i == j ? matrix[i][j] : Integer.MAX_VALUE;
             }
         }
-        return nmatrix;
+        return newMatrix;
     }
 
     private static int timeConverter(String time) { //exception to handle
@@ -189,22 +194,19 @@ public abstract class Reader {
         return minutes;
     }
 
-    private static double getPrice(String price) { //exception to handle
+    private static double getPrice(String price) throws NumberFormatException { //exception to handle
         price = price.strip();
-        if (price == "--") {
+        if (price.contains("--")) {
             return 0;
         } else {
-            try {
-                return Double.parseDouble(price);
-            } catch (NumberFormatException e) {
-                return 0;
-            }
+            return Double.parseDouble(price);
         }
-
     }
 
     private static void showHelp() {
-        System.out.println("Tu będzie wyświetlać się instrukcja obsługi programu.");
+        System.out.println("Brak podanych argumentów wejściowych. Aby poprawnie uruchomić program podaj argumenty według następującego schematu:");
+        System.out.println(".\\pathfinder data\\plik_konfiguracyjny nazwa_miejsca_startowego \\data\\wybrane_miejsca");
+        System.out.println("Ostatni argument jest opcjonalny.");
     }
 
     private static ArrayList<String> readChosenFile(String path) {

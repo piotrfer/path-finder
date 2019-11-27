@@ -1,7 +1,6 @@
 package source;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Comparator;
 
 public class Solver implements SolverInterface {
@@ -15,7 +14,6 @@ public class Solver implements SolverInterface {
         ArrayList<String> nameToIndexList = (ArrayList<String>) pointsToVisit.clone();
         pointsToVisit.remove(start);
 
-
         ArrayList<String[]> powerSet = getPowerSet(pointsToVisit);
 
         for (int i = 0; i < powerSet.size(); i++) {
@@ -23,12 +21,7 @@ public class Solver implements SolverInterface {
                 if (!hasIn(powerSet.get(i), k)) {
                     Solution currentSolution = new Solution(k, powerSet.get(i));
                     partSolution.add(currentSolution);
-                    //System.out.println(currentSolution);
-                    currentSolution.solve(setup.getMap(), setup.getAllPlaces().get(start), start, nameToIndexList, partSolution);
-                    //System.out.println("-> " + currentSolution);
-                    /*for (int j = 0; j < partSolution.size(); j++) {
-                        System.out.println("##### " + partSolution.get(j));
-                    }*/
+                    currentSolution.solve(setup.getMap(), start, nameToIndexList, partSolution);
                 }
             }
         }
@@ -53,10 +46,7 @@ public class Solver implements SolverInterface {
                     minimumPrice = currentPrice;
                     minimumThrough = through;
                 }
-
-
             }
-
         }
 
         return new Solution(minimumTime, minimumPrice, minimumThrough);

@@ -8,7 +8,7 @@ public class Solution {
     private String[] by;
     private int time;
     private double price;
-    private ArrayList<String> through;// = new ArrayList<>();
+    private ArrayList<String> through;
 
     public Solution(int time, double price, ArrayList<String> through) {
         this.time = time;
@@ -41,7 +41,7 @@ public class Solution {
         return through;
     }
 
-    public void solve(Map map, String startingPoint, int startingPointIndex, ArrayList<String> nameToIndex, ArrayList<Solution> partSolutions) {
+    public void solve(Map map, int startingPointIndex, ArrayList<String> nameToIndex, ArrayList<Solution> partSolutions) {
 
         if (by.length == 0) {
             time = map.getTimeMatrix()[startingPointIndex][nameToIndex.indexOf(finish)];
@@ -71,8 +71,6 @@ public class Solution {
                             int timeToCheck = currentSolution.getTime() + map.getTimeMatrix()[midFinishIndex][actualFinishIndex];
                             double priceToCheck = currentSolution.getPrice() + map.getPriceMatrix()[midFinishIndex][actualFinishIndex];
 
-                            //System.out.println("----" + currentSolution);
-
                             if (timeToCheck < minimumTime || (timeToCheck == minimumTime && priceToCheck < minimumPrice)) {
                                 minimumTime = timeToCheck;
                                 minimumPrice = priceToCheck;
@@ -81,13 +79,11 @@ public class Solution {
                                 if (map.getPointsThroughMatrix()[midFinishIndex][actualFinishIndex] != null) {
                                     minimumThrough.addAll(map.getPointsThroughMatrix()[midFinishIndex][actualFinishIndex]);
                                 }
-                                //System.out.println("----" + currentSolution);
-                                //System.out.println("----" + currentSolution.getThrough() + " + " + currentSolution.getFinish());
-                                //System.out.println("----" + startingPointIndex + " -> " + midFinishIndex + " -> " + actualFinishIndex);
-
-
                             }
                         }
+                    }
+                    else if(currentSolution.getBy().length < this.by.length - 1){
+                        partSolutions.remove(i);
                     }
                 }
             }
@@ -98,7 +94,7 @@ public class Solution {
     }
 
 
-    @Override
+    /*@Override
     public String toString() {
         StringBuilder b = new StringBuilder();
         b.append("A({ ");
@@ -114,6 +110,6 @@ public class Solution {
         b.append("]");
 
         return b.toString();
-    }
+    }*/
 
 }

@@ -8,23 +8,6 @@ public class Map {
     private ArrayList<String>[][] pointsThroughMatrix;
     private double[][] priceMatrix;
 
-    public int[][] getTimeMatrix() {
-        return timeMatrix;
-    }
-
-    public ArrayList<String>[][] getPointsThroughMatrix() {
-        return pointsThroughMatrix;
-    }
-
-    public double[][] getPriceMatrix() {
-        return priceMatrix;
-    }
-
-    public Map(int[][] timeMatrix, double[][] priceMatrix) {
-        this.timeMatrix = timeMatrix;
-        this.priceMatrix = priceMatrix;
-    }
-
     public boolean fillGraph(ArrayList<String> allPlaces) {
         int[][] timeMatrix = this.timeMatrix;
         double[][] priceMatrix = this.priceMatrix;
@@ -47,8 +30,7 @@ public class Map {
                     }
                     int timeBy = timeMatrix[start][by] + byTimeArray[finish];
                     double priceBy = priceMatrix[start][by] + priceMatrix[by][finish];
-                    if ( timeBy < timeMatrix[start][finish] || (timeBy == timeMatrix[start][finish] && priceBy < priceMatrix[start][finish])) {//jeżeli droga przez dany wierzchołek jest mniejsza
-                        //System.out.println(allPlaces.get(start) + " | " + allPlaces.get(finish) + " | " + allPlaces.get(start) + "->" + allPlaces.get(by) + "->" + allPlaces.get(finish) + " " + (timeBy) + " AKTUALNA NAJKRÓTSZA DROGA: " + timeMatrix[start][finish]);
+                    if ( timeBy < timeMatrix[start][finish] || (timeBy == timeMatrix[start][finish] && priceBy < priceMatrix[start][finish])) {
 
                         timeMatrix[start][finish] = timeBy;
                         pointsThrough[start][finish] = new ArrayList<>();
@@ -64,12 +46,6 @@ public class Map {
                         }
 
                         priceMatrix[start][finish] = priceBy;
-
-                        /*if (pointsThrough[start][finish] != null) {
-                            System.out.println(pointsThrough[start][finish]);
-                        } else {
-                            System.out.println("[]");
-                        } */
                     }
                 }
             }
@@ -160,6 +136,23 @@ public class Map {
         this.pointsThroughMatrix = npointsThrough;
         this.priceMatrix = npriceMatrix;
         return true;
+    }
+
+    public int[][] getTimeMatrix() {
+        return timeMatrix;
+    }
+
+    public ArrayList<String>[][] getPointsThroughMatrix() {
+        return pointsThroughMatrix;
+    }
+
+    public double[][] getPriceMatrix() {
+        return priceMatrix;
+    }
+
+    public Map(int[][] timeMatrix, double[][] priceMatrix) {
+        this.timeMatrix = timeMatrix;
+        this.priceMatrix = priceMatrix;
     }
 
     //tmp
