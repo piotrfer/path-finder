@@ -19,14 +19,14 @@ public class Main {
         System.out.println(mountainSetup.getAllPlaces());
         System.out.println(mountainSetup.getChosenPlaces());
 
-        Path optimalPath;
+        Solution s;
         Solver heldKarp = new Solver();
-        if ((optimalPath = heldKarp.solveMap(mountainSetup)) == null) {
+        if ((s = heldKarp.solveMap(mountainSetup)) == null) {
             System.exit(1);
         }
-        /*if( !WriteOnScreen.showPath(optimalPath)){
+        if( !WriteOnScreen.showPath(s, mountainSetup)){
             System.exit(1);
-        } */
+        }
 
 
     }

@@ -40,6 +40,7 @@ public abstract class Reader {
             System.err.println(mountainSetup.getAllPlaces());
             ArrayList<String> tmp = mountainSetup.getAllPlaces();
             System.err.println(tmp.contains(startingPoint));
+            System.err.println(mountainSetup.getAllPlaces());
             System.err.println("Argument wejściowy: punkt startowy " + startingPoint + " nie istnieje na mapie.");
             return null;
         }

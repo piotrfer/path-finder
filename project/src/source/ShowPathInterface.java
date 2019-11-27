@@ -1,7 +1,7 @@
 package source;
 
 public interface ShowPathInterface {
-    static boolean showPath(Path path) {
+    static boolean showPath(Solution solution) {
         return false;
     }
 }
