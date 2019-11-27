@@ -1,6 +1,8 @@
 package source;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 
 public class Solver implements SolverInterface {
 
@@ -10,49 +12,65 @@ public class Solver implements SolverInterface {
         int size = setup.getMap().getTimeMatrix().length;
         ArrayList<Solution> partSolution = new ArrayList<>();
 
-        for (int i = 1; i <= size; i++) { //obróci się tyle razy ile miejsc ma odwiedzić
-            ArrayList<int[]> combinations = generateCombinations(size, i);
-            System.out.println("smt");
+        ArrayList<String> pointsToVisit = (ArrayList<String>) setup.getAllPlaces().clone();
+        pointsToVisit.remove(start);
+
+        ArrayList<String[]> powerSet = getPowerSet(pointsToVisit);
+
+        for (int i = 0; i < powerSet.size(); i++) {
+            for ( String k : pointsToVisit ){
+                if( !hasIn(powerSet.get(i), k) ){
+                    System.out.println(k + " | " + Arrays.toString(powerSet.get(i)));
+                }
+            }
         }
+
+
         return null;
     }
 
-    private static ArrayList<int[]> generateCombinations(int size, int k) {
-        ArrayList<int[]> result = new ArrayList<>();
-        for(int i = 0; i < size; i++){
-            int[] digit = new int[1];
-            digit[0] = i;
-            result.add(digit);
-        }
+    private static ArrayList<String[]> getPowerSet(ArrayList<String> pointsToVisit) {
+        //funkcja na podstawie kodu zamieszczonego na stronie https://www.geeksforgeeks.org/power-set/
+        int size = (int) Math.pow(2, pointsToVisit.size());
+        ArrayList<String[]> result = new ArrayList<>();
 
-        for(int i = 2; i <= k; i++) {
-            result = addDigit(result, k);
+        for (int i = 0; i < size; i++) {
+            String[] digits = new String[Integer.bitCount(i)];
+            int n = 0;
+            for (int j = 0; j < size; j++) {
+                if ((i & (1 << j)) > 0) {
+                    digits[n++] = pointsToVisit.get(j);
+                }
+            }
+            result.add(digits);
         }
+        result.sort(new Comparator<String[]>() {
+            @Override
+            public int compare(String[] o1, String[] o2) {
+                return Integer.compare(o1.length, o2.length);
+            }
+        });
 
         return result;
     }
 
-    private static ArrayList<int[]> addDigit(ArrayList<int[]> given, int k){
-        int size = given.size();
-        for(int i = 0; i < size; i++){
-            for(int j = 0; j < k; j++){
-                int[] digit = new int[given.get(i).length + 1];
-                digit[given.get(i).length] = k;
-                given.add(digit);
+    private static boolean hasIn(String[] set, String key){
+        for(int i = 0; i < set.length; i++){
+            if( set[i] == key ){
+                return true;
             }
-            given.remove(i);
         }
-        return given;
+        return false;
     }
 
     private class Solution {
         private int finish;
-        private ArrayList<Integer> by;
+        private String[] by;
         private int time;
         private double price;
         private ArrayList<Integer> through;
 
-        public Solution(int finish, ArrayList<Integer> by, int time, double price, ArrayList<Integer> through) {
+        public Solution(int finish, String[] by, int time, double price, ArrayList<Integer> through) {
             this.finish = finish;
             this.by = by;
             this.time = time;
@@ -64,7 +82,7 @@ public class Solver implements SolverInterface {
             return finish;
         }
 
-        public ArrayList<Integer> getBy() {
+        public String[] getBy() {
             return by;
         }
 

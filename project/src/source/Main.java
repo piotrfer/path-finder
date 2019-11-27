@@ -7,10 +7,10 @@ public class Main {
 
 
         Setup mountainSetup;
-        if((mountainSetup = Reader.setUpData(args)) == null){
+        if ((mountainSetup = Reader.setUpData(args)) == null) {
             System.exit(1);
         }
-        if(!mountainSetup.getReady()){
+        if (!mountainSetup.getReady()) {
             System.exit(1);
         }
 
@@ -20,7 +20,7 @@ public class Main {
         System.out.println(mountainSetup.getChosenPlaces());
 
         Path optimalPath;
-        if( (optimalPath = Solver.solveMap(mountainSetup)) == null){
+        if ((optimalPath = Solver.solveMap(mountainSetup)) == null) {
             System.exit(1);
         }
         /*if( !WriteOnScreen.showPath(optimalPath)){
