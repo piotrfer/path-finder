@@ -20,7 +20,8 @@ public class Main {
         System.out.println(mountainSetup.getChosenPlaces());
 
         Path optimalPath;
-        if ((optimalPath = Solver.solveMap(mountainSetup)) == null) {
+        Solver heldKarp = new Solver();
+        if ((optimalPath = heldKarp.solveMap(mountainSetup)) == null) {
             System.exit(1);
         }
         /*if( !WriteOnScreen.showPath(optimalPath)){
