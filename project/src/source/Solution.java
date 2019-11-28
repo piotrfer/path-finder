@@ -94,7 +94,7 @@ public class Solution {
     }
 
 
-    /*@Override
+    @Override
     public String toString() {
         StringBuilder b = new StringBuilder();
         b.append("A({ ");
@@ -110,6 +110,6 @@ public class Solution {
         b.append("]");
 
         return b.toString();
-    }*/
+    }
 
 }

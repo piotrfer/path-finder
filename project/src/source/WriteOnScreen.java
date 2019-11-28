@@ -10,13 +10,13 @@ public class WriteOnScreen implements ShowPathInterface {
         }
         System.out.println("=============================");
         System.out.println("Optymalna ścieżka:");
-        System.out.print(start + " ");
+        System.out.print(start);
         for (int i = 0; i < sol.getThrough().size(); i++) {
-            System.out.print("-> " + sol.getThrough().get(i));
+            System.out.print(" -> " + sol.getThrough().get(i));
         }
-        System.out.print("-> " + start + "\n");
+        System.out.print(" -> " + start + "\n");
         System.out.println("Czas: " + getHoursAndMinutes(sol.getTime()));
-        System.out.println("Koszt: " + sol.getPrice());
+        System.out.println("Koszt: " + sol.getPrice() + " zł");
         System.out.println("=============================");
         return true;
     }

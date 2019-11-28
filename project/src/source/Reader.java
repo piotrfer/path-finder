@@ -34,19 +34,20 @@ public abstract class Reader {
         if (setup.getAllPlaces().contains(startingPoint)) {
             setup.setStartingPoint(startingPoint);
         } else {
-            System.err.println(setup.getAllPlaces());
-            ArrayList<String> tmp = setup.getAllPlaces();
-            System.err.println(tmp.contains(startingPoint));
-            System.err.println(setup.getAllPlaces());
-            System.err.println("Argument wejściowy: punkt startowy " + startingPoint + " nie istnieje na mapie.");
+            System.err.println("Argument wejściowy: punkt startowy " + startingPoint + " nie istnieje na mapie");
             return null;
         }
 
         if (chosenPath != null) {
             setup.setChosenPlaces(readChosenFile(chosenPath));
-            if (setup == null) {
+            if (setup.getChosenPlaces() == null) {
                 System.err.println("Plik wybranych miejsc: krytyczny błąd odczytu pliku.");
                 return null;
+            }
+            if (!setup.getChosenPlaces().contains(startingPoint) && setup.getAllPlaces().contains(startingPoint)) {
+                ArrayList<String> chosenPlacesWithStart = setup.getChosenPlaces();
+                chosenPlacesWithStart.add(startingPoint);
+                setup.setChosenPlaces(chosenPlacesWithStart);
             }
         }
         return setup;
@@ -56,15 +57,13 @@ public abstract class Reader {
         Setup readSetup = new Setup();
         BufferedReader reader = null;
 
-
         try {
             reader = new BufferedReader(new FileReader(path));
             readSetup.setAllPlaces(readPlacesFromReader(reader));
             readSetup.setMap(readMapFromReader(reader, readSetup.getAllPlaces()));
             reader.close();
-        } catch (
-                IOException e) {
-            System.err.println("Plik konfiguracyjny: krytyczny błąd odczytu pliku.");
+        } catch (IOException e) {
+            System.err.println("Plik o podanej ścieżce: " + path + " nie istnieje.");
         } finally {
             if (reader == null || readSetup.getMap() == null || readSetup.getAllPlaces() == null) {
                 System.err.println("Plik konfiguracyjny: krytyczny błąd odczytu pliku.");
@@ -81,24 +80,31 @@ public abstract class Reader {
         ArrayList<String> allPlaces = new ArrayList<>();
 
         while ((currentLine = reader.readLine()) != null) {
-            if (currentLine.length() == 0 || currentLine.charAt(0) == '#') {
+            if (currentLine.length() == 0 || currentLine.strip().charAt(0) == '#') {
                 continue;
             }
             String[] words = currentLine.split("\\|");
+            if (words[0].contains("#")) {
+                continue;
+            }
             if (words.length != 4) {
                 return allPlaces;
             }
             if (!isNumber(words[0])) {
                 continue;
             }
+
             reader.mark(0);
+            String lp = words[0];
             String id = words[1].strip();
             if (allPlaces.contains(id)) {
-                System.err.println("Plik konfiguracyjny: Miejsce o id \"" + words[1] + "\" już zostało podane w pliku. Pomijam: \n" + currentLine + "\n");
+                System.err.println("Plik konfiguracyjny: lp.: " + lp + ": Miejsce o id \"" + words[1] + "\" już zostało podane w pliku. Pomijam: \n" + currentLine + "\n");
             } else {
                 allPlaces.add(id);
             }
         }
+
+        System.out.println(allPlaces);
         return allPlaces;
     }
 
@@ -116,6 +122,7 @@ public abstract class Reader {
         int[][] timeMatrix = new int[allPlaces.size()][allPlaces.size()];
         double[][] priceMatrix = new double[allPlaces.size()][allPlaces.size()];
         String currentLine;
+        reader.reset();
         while ((currentLine = reader.readLine()) != null) {
             if (currentLine.length() == 0 || currentLine.charAt(0) == '#') {
                 continue;
@@ -147,6 +154,10 @@ public abstract class Reader {
             int toIndex = allPlaces.indexOf(to);
             int forwardMinutes = timeConverter(forward);
             int backwardMinutes = timeConverter(backward);
+            if (forwardMinutes <= 0 || backwardMinutes <= 0) {
+                System.err.println("Plik konfiguracyjny: lp.: " + lp + "Czas podróży między punktami musi być większy od zera!");
+                return null;
+            }
             double priceInPln;
             try {
                 priceInPln = getPrice(price);
@@ -184,7 +195,7 @@ public abstract class Reader {
         return newMatrix;
     }
 
-    private static int timeConverter(String time) { //exception to handle
+    private static int timeConverter(String time) {
         int minutes = 0;
         time = time.strip();
         String[] parts = time.split(":");
@@ -194,7 +205,7 @@ public abstract class Reader {
         return minutes;
     }
 
-    private static double getPrice(String price) throws NumberFormatException { //exception to handle
+    private static double getPrice(String price) throws NumberFormatException {
         price = price.strip();
         if (price.contains("--")) {
             return 0;

@@ -1,5 +1,6 @@
 package source;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -30,7 +31,7 @@ public class Map {
                     }
                     int timeBy = timeMatrix[start][by] + byTimeArray[finish];
                     double priceBy = priceMatrix[start][by] + priceMatrix[by][finish];
-                    if ( timeBy < timeMatrix[start][finish] || (timeBy == timeMatrix[start][finish] && priceBy < priceMatrix[start][finish])) {
+                    if (timeBy < timeMatrix[start][finish] || (timeBy == timeMatrix[start][finish] && priceBy < priceMatrix[start][finish])) {
 
                         timeMatrix[start][finish] = timeBy;
                         pointsThrough[start][finish] = new ArrayList<>();
@@ -52,23 +53,21 @@ public class Map {
         }
         this.pointsThroughMatrix = pointsThrough;
 
-        if( !isGraphConsistent(timeMatrix, allPlaces) ){
+        if (!isGraphConsistent(timeMatrix, allPlaces)) {
             return false;
-        }
-        else {
+        } else {
             return true;
         }
     }
 
-    private boolean isGraphConsistent(int[][] timeMatrix, ArrayList<String> allPlaces ){
-        for(int i = 0; i < timeMatrix.length - 1; i++){
-            for(int j = 0; j < timeMatrix[i].length; j++){
-                if( timeMatrix[i][j] == Integer.MAX_VALUE ){
+    private boolean isGraphConsistent(int[][] timeMatrix, ArrayList<String> allPlaces) {
+        for (int i = 0; i < timeMatrix.length - 1; i++) {
+            for (int j = 0; j < timeMatrix[i].length; j++) {
+                if (timeMatrix[i][j] == Integer.MAX_VALUE) {
                     int detached;
-                    if( timeMatrix[i+1][j] == Integer.MAX_VALUE){
+                    if (timeMatrix[i + 1][j] == Integer.MAX_VALUE) {
                         detached = j;
-                    }
-                    else{
+                    } else {
                         detached = i;
                     }
                     System.err.println("Graf jest niespójny. Wierzchołek " + allPlaces.get(detached) + " nie jest połączony z innymi.");
@@ -93,13 +92,11 @@ public class Map {
                     minIndex = i;
                 }
             }
-            if( minIndex != -1 ){
+            if (minIndex != -1) {
                 return minIndex;
-            }
-            else if( !queue.isEmpty() ){
+            } else if (!queue.isEmpty()) {
                 return allPoints.indexOf(queue.get(0));
-            }
-            else{
+            } else {
                 return -1;
             }
         }
@@ -191,5 +188,27 @@ public class Map {
         }
 
         return b.toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this.getClass() != o.getClass()) {
+            return false;
+        }
+        Map no = (Map) o;
+        if (Arrays.equals(this.pointsThroughMatrix, no.pointsThroughMatrix)) {
+            for(int i = 0; i < this.priceMatrix.length; i++){
+                if(!Arrays.equals(this.timeMatrix[i], no.timeMatrix[i]) || !Arrays.equals(this.priceMatrix[i], no.priceMatrix[i])){
+                    System.err.println("Price or time " + i);
+                    System.err.println(Arrays.equals(this.timeMatrix[i], no.timeMatrix[i]));
+                    System.err.println(Arrays.equals(this.priceMatrix[i], no.priceMatrix[i]));
+                    return false;
+                }
+            }
+            return true;
+        } else {
+            System.err.println("Pointsthrough");
+            return false;
+        }
     }
 }

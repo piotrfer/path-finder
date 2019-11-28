@@ -6,16 +6,13 @@ import java.util.Comparator;
 public class Solver implements SolverInterface {
 
     public Solution solveMap(Setup setup) {
-
-        int start = setup.getAllPlaces().indexOf(setup.getStartingPoint());
         ArrayList<Solution> partSolution = new ArrayList<>();
 
         ArrayList<String> pointsToVisit = (ArrayList<String>) (setup.getChosenPlaces() != null ? setup.getChosenPlaces().clone() : setup.getAllPlaces().clone());
         ArrayList<String> nameToIndexList = (ArrayList<String>) pointsToVisit.clone();
-        pointsToVisit.remove(start);
-
+        int start = nameToIndexList.indexOf(setup.getStartingPoint());
+        pointsToVisit.remove(setup.getStartingPoint());
         ArrayList<String[]> powerSet = getPowerSet(pointsToVisit);
-
         for (int i = 0; i < powerSet.size(); i++) {
             for (String k : pointsToVisit) {
                 if (!hasIn(powerSet.get(i), k)) {
@@ -23,10 +20,10 @@ public class Solver implements SolverInterface {
                     partSolution.add(currentSolution);
                     currentSolution.solve(setup.getMap(), start, nameToIndexList, partSolution);
                 }
+
             }
         }
 
-        //GET THE MINIMUM OUT OF
         int minimumTime = Integer.MAX_VALUE;
         double minimumPrice = Double.MAX_VALUE;
         ArrayList<String> minimumThrough = new ArrayList<>();

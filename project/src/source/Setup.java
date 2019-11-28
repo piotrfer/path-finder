@@ -9,6 +9,16 @@ public class Setup {
     private ArrayList<String> chosenPlaces;
     private ArrayList<String> allPlaces;
 
+    public Setup() {
+    }
+
+    public Setup(Map map, String startingPoint, ArrayList<String> chosenPlaces, ArrayList<String> allPlaces) {
+        this.map = map;
+        this.startingPoint = startingPoint;
+        this.chosenPlaces = chosenPlaces;
+        this.allPlaces = allPlaces;
+    }
+
     public boolean getReady() {
         if (!map.fillGraph(allPlaces)) {
             return false;
@@ -56,4 +66,28 @@ public class Setup {
         this.allPlaces = allPlaces;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if( o == null){
+            return false;
+        }
+        if (this.getClass() != o.getClass()) {
+            return false;
+        }
+        Setup no = (Setup) o;
+        if (this.map.equals(no.map) && this.startingPoint.equals(no.startingPoint) && this.allPlaces.equals(no.allPlaces)) {
+            if( (this.chosenPlaces == null && no.chosenPlaces == null) || this.chosenPlaces.equals(no.chosenPlaces)) {
+                return true;
+            }
+            else{
+                System.err.println("chosen");
+                return false;
+            }
+        } else {
+            System.err.println(this.map.equals(no.map));
+            System.err.println(this.startingPoint.equals(no.startingPoint));
+            System.err.println(this.allPlaces.equals(no.allPlaces));
+            return false;
+        }
+    }
 }
