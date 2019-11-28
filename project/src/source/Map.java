@@ -1,6 +1,5 @@
 package source;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -114,10 +113,8 @@ public class Map {
                 common.add(i);
             }
         }
-
         int n = 0;
         int m = 0;
-
         for (int i : common) {
             for (int j : common) {
                 ntimeMatrix[n][m] = this.timeMatrix[i][j];
@@ -128,7 +125,6 @@ public class Map {
             n++;
             m = 0;
         }
-
         this.timeMatrix = ntimeMatrix;
         this.pointsThroughMatrix = npointsThrough;
         this.priceMatrix = npriceMatrix;
@@ -152,44 +148,6 @@ public class Map {
         this.priceMatrix = priceMatrix;
     }
 
-    //tmp
-    @Override
-    public String toString() {
-        StringBuilder b = new StringBuilder();
-        b.append("TIME: \n");
-        for (int i = 0; i < timeMatrix.length; i++) {
-            b.append("[ ");
-            for (int j = 0; j < timeMatrix.length; j++) {
-                b.append(timeMatrix[i][j]).append(", ");
-            }
-            b.append(("] \n"));
-        }
-        b.append("\n PRICE: \n");
-        for (int i = 0; i < priceMatrix.length; i++) {
-            b.append("[ ");
-            for (int j = 0; j < priceMatrix.length; j++) {
-                b.append(priceMatrix[i][j]).append(", ");
-            }
-            b.append(("] \n"));
-        }
-
-        if (pointsThroughMatrix != null) {
-            b.append("\n POINTS THROUGH: \n");
-            for (int i = 0; i < pointsThroughMatrix.length; i++) {
-                for (int j = 0; j < pointsThroughMatrix[i].length; j++) {
-                    if (pointsThroughMatrix[i][j] != null) {
-                        b.append(Arrays.toString(pointsThroughMatrix[i][j].toArray()));
-                    } else {
-                        b.append("[]");
-                    }
-                }
-                b.append('\n');
-            }
-        }
-
-        return b.toString();
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this.getClass() != o.getClass()) {
@@ -197,17 +155,13 @@ public class Map {
         }
         Map no = (Map) o;
         if (Arrays.equals(this.pointsThroughMatrix, no.pointsThroughMatrix)) {
-            for(int i = 0; i < this.priceMatrix.length; i++){
-                if(!Arrays.equals(this.timeMatrix[i], no.timeMatrix[i]) || !Arrays.equals(this.priceMatrix[i], no.priceMatrix[i])){
-                    System.err.println("Price or time " + i);
-                    System.err.println(Arrays.equals(this.timeMatrix[i], no.timeMatrix[i]));
-                    System.err.println(Arrays.equals(this.priceMatrix[i], no.priceMatrix[i]));
+            for (int i = 0; i < this.priceMatrix.length; i++) {
+                if (!Arrays.equals(this.timeMatrix[i], no.timeMatrix[i]) || !Arrays.equals(this.priceMatrix[i], no.priceMatrix[i])) {
                     return false;
                 }
             }
             return true;
         } else {
-            System.err.println("Pointsthrough");
             return false;
         }
     }

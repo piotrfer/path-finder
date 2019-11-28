@@ -10,12 +10,12 @@ public abstract class Reader {
         String configPath = args.length < 1 ? null : args[0].strip();
         String startingPoint = args.length < 2 ? null : args[1].strip();
         String chosenPath = args.length < 3 ? null : args[2].strip();
+        System.out.println("=============================");
 
         if (args.length == 0) {
             showHelp();
             return null;
         }
-
         if (configPath == null) {
             System.err.println("Argument wejściowy: brak podanego pliku konfiguracyjnego");
             return null;
@@ -24,7 +24,6 @@ public abstract class Reader {
             System.err.println("Argument wejściowy: brak podanego punktu startowego");
             return null;
         }
-
         System.out.println("Argumenty wejściowe: wszystkie argumenty zostały wczytane.");
 
         Setup setup = readConfigFile(configPath);
@@ -56,7 +55,6 @@ public abstract class Reader {
     private static Setup readConfigFile(String path) {
         Setup readSetup = new Setup();
         BufferedReader reader = null;
-
         try {
             reader = new BufferedReader(new FileReader(path));
             readSetup.setAllPlaces(readPlacesFromReader(reader));
@@ -103,8 +101,6 @@ public abstract class Reader {
                 allPlaces.add(id);
             }
         }
-
-        System.out.println(allPlaces);
         return allPlaces;
     }
 
@@ -134,7 +130,7 @@ public abstract class Reader {
             if (!isNumber(words[0])) {
                 continue;
             }
-            String lp = words[0];
+            String lp = words[0].strip();
             String from = words[1].strip();
             String to = words[2].strip();
             String forward = words[3].strip();
@@ -179,9 +175,7 @@ public abstract class Reader {
 
             }
         }
-
         timeMatrix = fillBlanks(timeMatrix);
-
         return new Map(timeMatrix, priceMatrix);
     }
 
@@ -218,6 +212,7 @@ public abstract class Reader {
         System.out.println("Brak podanych argumentów wejściowych. Aby poprawnie uruchomić program podaj argumenty według następującego schematu:");
         System.out.println(".\\pathfinder data\\plik_konfiguracyjny nazwa_miejsca_startowego \\data\\wybrane_miejsca");
         System.out.println("Ostatni argument jest opcjonalny.");
+        System.out.println("=============================");
     }
 
     private static ArrayList<String> readChosenFile(String path) {

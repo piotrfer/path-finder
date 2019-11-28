@@ -3,7 +3,7 @@ package source;
 import java.util.ArrayList;
 import java.util.Comparator;
 
-public class Solver implements SolverInterface {
+public class Solver {
 
     public Solution solveMap(Setup setup) {
         ArrayList<Solution> partSolution = new ArrayList<>();
@@ -77,6 +77,4 @@ public class Solver implements SolverInterface {
         }
         return false;
     }
-
-
 }

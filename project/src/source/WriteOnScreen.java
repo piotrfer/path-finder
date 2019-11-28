@@ -1,10 +1,10 @@
 package source;
 
-public class WriteOnScreen implements ShowPathInterface {
+public class WriteOnScreen {
 
     public static boolean showPath(Solution sol, Setup setup) {
         String start = setup.getStartingPoint();
-        if( sol.getThrough() == null){
+        if (sol.getThrough() == null) {
             System.err.println("Scieżka jest pusta.");
             return false;
         }
@@ -23,7 +23,7 @@ public class WriteOnScreen implements ShowPathInterface {
 
     private static String getHoursAndMinutes(int time) {
         StringBuilder b = new StringBuilder();
-        b.append((int)Math.floor(time / 60)).append(" godz. ").append(time % 60).append(" min.");
+        b.append((int) Math.floor(time / 60)).append(" godz. ").append(time % 60).append(" min.");
         return b.toString();
     }
 }

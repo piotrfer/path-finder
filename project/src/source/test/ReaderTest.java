@@ -13,8 +13,6 @@ import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import static org.junit.Assert.*;
-
 public class ReaderTest {
 
     private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();

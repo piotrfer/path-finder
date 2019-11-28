@@ -68,7 +68,7 @@ public class Setup {
 
     @Override
     public boolean equals(Object o) {
-        if( o == null){
+        if (o == null) {
             return false;
         }
         if (this.getClass() != o.getClass()) {
@@ -76,10 +76,9 @@ public class Setup {
         }
         Setup no = (Setup) o;
         if (this.map.equals(no.map) && this.startingPoint.equals(no.startingPoint) && this.allPlaces.equals(no.allPlaces)) {
-            if( (this.chosenPlaces == null && no.chosenPlaces == null) || this.chosenPlaces.equals(no.chosenPlaces)) {
+            if ((this.chosenPlaces == null && no.chosenPlaces == null) || this.chosenPlaces.equals(no.chosenPlaces)) {
                 return true;
-            }
-            else{
+            } else {
                 System.err.println("chosen");
                 return false;
             }

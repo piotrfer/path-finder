@@ -92,24 +92,4 @@ public class Solution {
             this.through = minimumThrough;
         }
     }
-
-
-    @Override
-    public String toString() {
-        StringBuilder b = new StringBuilder();
-        b.append("A({ ");
-        for (int i = 0; i < by.length; i++) {
-            b.append(by[i]).append(", ");
-        }
-        b.append("}, ").append(finish).append(") = time: ").append(time).append(" price: ").append(price).append(" through: [ ");
-        if (through != null) {
-            for (int i = 0; i < through.size(); i++) {
-                b.append(through.get(i)).append(", ");
-            }
-        }
-        b.append("]");
-
-        return b.toString();
-    }
-
 }
