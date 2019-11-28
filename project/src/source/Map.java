@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Map {
+
     private int[][] timeMatrix;
     private ArrayList<String>[][] pointsThroughMatrix;
     private double[][] priceMatrix;
@@ -84,8 +85,9 @@ public class Map {
             int minValue = Integer.MAX_VALUE;
             int minIndex = -1;
             for (int i = 0; i < array.length; i++) {
-                if (!queue.contains(allPoints.get(i)))
+                if (!queue.contains(allPoints.get(i))) {
                     continue;
+                }
                 if (minValue > array[i]) {
                     minValue = array[i];
                     minIndex = i;

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Solution {
+
     private String finish;
     private String[] by;
     private int time;
@@ -52,7 +53,6 @@ public class Solution {
             double minimumPrice = Double.MAX_VALUE;
             ArrayList<String> minimumThrough = new ArrayList<>();
 
-
             for (String k : by) {
                 String[] tempBy = new String[by.length - 1];
                 int n = 0;
@@ -81,8 +81,7 @@ public class Solution {
                                 }
                             }
                         }
-                    }
-                    else if(currentSolution.getBy().length < this.by.length - 1){
+                    } else if (currentSolution.getBy().length < this.by.length - 1) {
                         partSolutions.remove(i);
                     }
                 }

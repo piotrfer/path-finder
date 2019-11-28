@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public abstract class Reader {
+
     public static Setup setUpData(String[] args) {
         String configPath = args.length < 1 ? null : args[0].strip();
         String startingPoint = args.length < 2 ? null : args[1].strip();

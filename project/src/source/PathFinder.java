@@ -1,6 +1,7 @@
 package source;
 
 public class PathFinder {
+
     public static void main(String[] args) {
         Setup mountainSetup;
         if ((mountainSetup = Reader.setUpData(args)) == null) {
