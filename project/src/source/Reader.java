@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 public abstract class Reader {
 
@@ -106,13 +107,7 @@ public abstract class Reader {
     }
 
     private static boolean isNumber(String word) {
-        word = word.strip();
-        for (char c : word.toCharArray()) {
-            if (!Character.isDigit(c) && c != '.') {
-                return false;
-            }
-        }
-        return true;
+        return Pattern.matches("[^\\w]*\\d*[\\.]?[^\\w]", word);
     }
 
     private static Map readMapFromReader(BufferedReader reader, ArrayList<String> allPlaces) throws IOException {
@@ -224,12 +219,11 @@ public abstract class Reader {
             String currentLine;
             chosenPlaces = new ArrayList<>();
             while ((currentLine = reader.readLine()) != null) {
-
                 if (currentLine.length() == 0 || currentLine.charAt(0) == '#') {
                     continue;
                 }
                 String[] words = currentLine.split("\\|");
-                if (!isNumber(words[0])) {
+                if (!isNumber(words[0]) || words.length < 2) {
                     continue;
                 }
                 String placeToAdd = words[1].strip();

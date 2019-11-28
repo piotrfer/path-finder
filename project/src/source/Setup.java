@@ -29,6 +29,7 @@ public class Setup {
             }
         }
         System.out.println("Przygotowanie danych przebiegło pomyślnie.");
+        System.out.println("=============================");
         return true;
     }
 

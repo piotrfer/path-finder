@@ -6,13 +6,20 @@ import java.util.Comparator;
 public class Solver {
 
     public Solution solveMap(Setup setup) {
-        ArrayList<Solution> partSolution = new ArrayList<>();
+        System.out.println("Trwa obliczanie optymalnej ścieżki...");
 
+        ArrayList<Solution> partSolution = new ArrayList<>();
         ArrayList<String> pointsToVisit = (ArrayList<String>) (setup.getChosenPlaces() != null ? setup.getChosenPlaces().clone() : setup.getAllPlaces().clone());
         ArrayList<String> nameToIndexList = (ArrayList<String>) pointsToVisit.clone();
         int start = nameToIndexList.indexOf(setup.getStartingPoint());
         pointsToVisit.remove(setup.getStartingPoint());
-        ArrayList<String[]> powerSet = getPowerSet(pointsToVisit);
+        if( pointsToVisit.size() == 0){
+            return new Solution(0, 0., new ArrayList<>() );
+        }
+        ArrayList<String[]> powerSet;
+        if ((powerSet = getPowerSet(pointsToVisit)) == null) {
+            return null;
+        }
         for (int i = 0; i < powerSet.size(); i++) {
             for (String k : pointsToVisit) {
                 if (!hasIn(powerSet.get(i), k)) {
@@ -51,7 +58,11 @@ public class Solver {
 
     private static ArrayList<String[]> getPowerSet(ArrayList<String> pointsToVisit) {
         //funkcja na podstawie kodu zamieszczonego na stronie https://www.geeksforgeeks.org/power-set/
-        int size = (int) Math.pow(2, pointsToVisit.size());
+        long size = (long) Math.pow(2, pointsToVisit.size());
+        if (size == Long.MAX_VALUE) {
+            System.err.println("Zbyt duża ilość danych wejściowych.");
+            return null;
+        }
         ArrayList<String[]> result = new ArrayList<>();
 
         for (int i = 0; i < size; i++) {
@@ -59,7 +70,9 @@ public class Solver {
             int n = 0;
             for (int j = 0; j < size; j++) {
                 if ((i & (1 << j)) > 0) {
-                    digits[n++] = pointsToVisit.get(j);
+                    if (n < size) {
+                        digits[n++] = pointsToVisit.get(j);
+                    }
                 }
             }
             result.add(digits);
