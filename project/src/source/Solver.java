@@ -13,8 +13,8 @@ public class Solver {
         ArrayList<String> nameToIndexList = (ArrayList<String>) pointsToVisit.clone();
         int start = nameToIndexList.indexOf(setup.getStartingPoint());
         pointsToVisit.remove(setup.getStartingPoint());
-        if( pointsToVisit.size() == 0){
-            return new Solution(0, 0., new ArrayList<>() );
+        if (pointsToVisit.size() == 0) {
+            return new Solution(0, 0., new ArrayList<>());
         }
         ArrayList<String[]> powerSet;
         if ((powerSet = getPowerSet(pointsToVisit)) == null) {
